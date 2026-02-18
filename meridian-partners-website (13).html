@@ -1,0 +1,1428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ageorge &amp; Co. | M&A Advisory</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@300;400;500;600;700&family=Libre+Franklin:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-navy: #0a1628;
+            --secondary-navy: #152238;
+            --accent-gold: #b8926a;
+            --accent-gold-light: #d4b896;
+            --text-light: #f8f7f5;
+            --text-muted: #a0a8b3;
+            --border-subtle: rgba(184, 146, 106, 0.2);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: 'Libre Franklin', sans-serif;
+            background: var(--primary-navy);
+            color: var(--text-light);
+            line-height: 1.7;
+            font-weight: 300;
+            overflow-x: hidden;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            padding: 1.5rem 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background: linear-gradient(to bottom, var(--primary-navy), transparent);
+            transition: all 0.4s ease;
+        }
+
+        nav.scrolled {
+            background: var(--primary-navy);
+            border-bottom: 1px solid var(--border-subtle);
+            padding: 1rem 5%;
+        }
+
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.6rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            color: var(--text-light);
+            text-transform: uppercase;
+        }
+
+        .logo span {
+            color: var(--accent-gold);
+        }
+
+        .nav-links {
+            display: none;
+        }
+
+        .nav-contact {
+            display: none;
+        }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            position: relative;
+            padding: 0 5%;
+            overflow: hidden;
+        }
+
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: 
+                radial-gradient(ellipse at 20% 50%, rgba(184, 146, 106, 0.08) 0%, transparent 50%),
+                radial-gradient(ellipse at 80% 80%, rgba(21, 34, 56, 0.8) 0%, transparent 50%),
+                linear-gradient(180deg, var(--primary-navy) 0%, var(--secondary-navy) 100%);
+        }
+
+        .hero-pattern {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-image: 
+                linear-gradient(rgba(184, 146, 106, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(184, 146, 106, 0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            opacity: 0.5;
+        }
+
+        .hero-content {
+            position: relative;
+            z-index: 1;
+            text-align: center;
+            max-width: 900px;
+            animation: fadeUp 1.2s ease-out;
+        }
+
+        @keyframes fadeUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .hero-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 2rem;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 1.5rem;
+        }
+
+        .hero-label::before,
+        .hero-label::after {
+            content: '';
+            width: 50px;
+            height: 1px;
+            background: var(--accent-gold);
+            opacity: 0.5;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2.5rem, 6vw, 4.5rem);
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 2rem;
+            letter-spacing: -0.01em;
+        }
+
+        .hero h1 em {
+            font-style: italic;
+            color: var(--accent-gold-light);
+        }
+
+        .hero-description {
+            font-size: 1.1rem;
+            color: var(--text-muted);
+            max-width: 600px;
+            margin: 0 auto 3rem;
+            line-height: 1.9;
+        }
+
+        .hero-cta {
+            display: inline-flex;
+            align-items: center;
+            gap: 1rem;
+            padding: 1rem 2.5rem;
+            background: transparent;
+            border: 1px solid var(--accent-gold);
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            transition: all 0.4s ease;
+            cursor: pointer;
+        }
+
+        .hero-cta:hover {
+            background: var(--accent-gold);
+            color: var(--primary-navy);
+            padding-right: 3rem;
+        }
+
+        .hero-cta svg {
+            width: 16px;
+            height: 16px;
+            transition: transform 0.3s ease;
+        }
+
+        .hero-cta:hover svg {
+            transform: translateX(5px);
+        }
+
+        /* Stats Section */
+        .stats {
+            padding: 6rem 5%;
+            background: var(--secondary-navy);
+            border-top: 1px solid var(--border-subtle);
+            border-bottom: 1px solid var(--border-subtle);
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 3rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stat-item {
+            text-align: center;
+            padding: 2rem;
+            position: relative;
+        }
+
+        .stat-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            width: 1px;
+            height: 60px;
+            background: var(--border-subtle);
+        }
+
+        .stat-number {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            color: var(--accent-gold);
+            line-height: 1;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            font-size: 0.75rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+
+        /* Services Section */
+        .services {
+            padding: 8rem 5%;
+            background: var(--primary-navy);
+        }
+
+        .section-header {
+            text-align: center;
+            max-width: 700px;
+            margin: 0 auto 5rem;
+        }
+
+        .section-label {
+            font-size: 0.75rem;
+            font-weight: 500;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--accent-gold);
+            margin-bottom: 1.5rem;
+        }
+
+        .section-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            line-height: 1.3;
+            margin-bottom: 1.5rem;
+        }
+
+        .section-description {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.8;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .service-card {
+            padding: 3rem;
+            background: linear-gradient(145deg, var(--secondary-navy), var(--primary-navy));
+            border: 1px solid var(--border-subtle);
+            transition: all 0.4s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .service-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 3px;
+            background: linear-gradient(90deg, var(--accent-gold), transparent);
+            transform: scaleX(0);
+            transform-origin: left;
+            transition: transform 0.4s ease;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            border-color: rgba(184, 146, 106, 0.4);
+        }
+
+        .service-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .service-icon {
+            width: 50px;
+            height: 50px;
+            margin-bottom: 2rem;
+            color: var(--accent-gold);
+        }
+
+        .service-card h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .service-card p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+        }
+
+        .service-link {
+            color: var(--accent-gold);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: gap 0.3s ease;
+        }
+
+        .service-link:hover {
+            gap: 1rem;
+        }
+
+        /* About Section */
+        .about {
+            padding: 8rem 5%;
+            background: var(--secondary-navy);
+            position: relative;
+        }
+
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 6rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            align-items: center;
+        }
+
+        .about-content .section-label {
+            text-align: left;
+        }
+
+        .about-content .section-title {
+            text-align: left;
+        }
+
+        .about-text {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.9;
+            margin-bottom: 2rem;
+        }
+
+        .about-features {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+            margin-top: 2rem;
+        }
+
+        .about-feature {
+            display: flex;
+            align-items: flex-start;
+            gap: 1rem;
+        }
+
+        .about-feature-icon {
+            width: 24px;
+            height: 24px;
+            color: var(--accent-gold);
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .about-feature span {
+            font-size: 0.9rem;
+            color: var(--text-light);
+        }
+
+        .about-visual {
+            position: relative;
+            height: 500px;
+        }
+
+        .about-image {
+            position: absolute;
+            background: linear-gradient(145deg, rgba(184, 146, 106, 0.1), rgba(21, 34, 56, 0.8));
+            border: 1px solid var(--border-subtle);
+        }
+
+        .about-image-1 {
+            top: 0;
+            right: 0;
+            width: 70%;
+            height: 60%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .about-image-2 {
+            bottom: 0;
+            left: 0;
+            width: 60%;
+            height: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .placeholder-content {
+            padding: 2rem;
+            text-align: center;
+        }
+
+        .placeholder-content svg {
+            width: 60px;
+            height: 60px;
+            color: var(--accent-gold);
+            opacity: 0.3;
+            margin-bottom: 1rem;
+        }
+
+        .placeholder-content span {
+            display: block;
+            font-size: 0.7rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            opacity: 0.5;
+        }
+
+        .about-accent {
+            position: absolute;
+            top: 10%;
+            left: 30%;
+            width: 100px;
+            height: 100px;
+            border: 1px solid var(--accent-gold);
+            opacity: 0.2;
+        }
+
+        /* Process Section */
+        .process {
+            padding: 8rem 5%;
+            background: var(--primary-navy);
+        }
+
+        .process-steps {
+            max-width: 1000px;
+            margin: 0 auto;
+            position: relative;
+        }
+
+        .process-steps::before {
+            content: '';
+            position: absolute;
+            left: 30px;
+            top: 0;
+            bottom: 0;
+            width: 1px;
+            background: var(--border-subtle);
+        }
+
+        .process-step {
+            display: flex;
+            gap: 3rem;
+            margin-bottom: 3rem;
+            position: relative;
+        }
+
+        .process-number {
+            width: 60px;
+            height: 60px;
+            border: 1px solid var(--accent-gold);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.5rem;
+            color: var(--accent-gold);
+            background: var(--primary-navy);
+            flex-shrink: 0;
+            position: relative;
+            z-index: 1;
+        }
+
+        .process-content {
+            padding-top: 0.5rem;
+        }
+
+        .process-content h3 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.4rem;
+            font-weight: 500;
+            margin-bottom: 0.75rem;
+        }
+
+        .process-content p {
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            line-height: 1.8;
+            max-width: 600px;
+        }
+
+        /* Testimonial Section */
+        .testimonial {
+            padding: 8rem 5%;
+            background: var(--secondary-navy);
+            text-align: center;
+        }
+
+        .testimonial-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .testimonial-quote {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(1.5rem, 3vw, 2.2rem);
+            font-weight: 300;
+            font-style: italic;
+            line-height: 1.6;
+            margin-bottom: 2rem;
+            position: relative;
+        }
+
+        .testimonial-quote::before {
+            content: '"';
+            position: absolute;
+            top: -2rem;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 6rem;
+            color: var(--accent-gold);
+            opacity: 0.2;
+            font-style: normal;
+        }
+
+        .testimonial-author {
+            color: var(--accent-gold);
+            font-size: 0.9rem;
+            font-weight: 500;
+            letter-spacing: 0.1em;
+        }
+
+        .testimonial-role {
+            color: var(--text-muted);
+            font-size: 0.8rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Contact Section */
+        .contact {
+            padding: 8rem 5%;
+            background: var(--primary-navy);
+            text-align: center;
+        }
+
+        .contact-centered {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        .contact-heading {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 4vw, 3rem);
+            font-weight: 300;
+            margin: 1.5rem 0;
+        }
+
+        .contact-subtext {
+            color: var(--text-muted);
+            font-size: 1rem;
+            line-height: 1.8;
+            margin-bottom: 3.5rem;
+            max-width: 540px;
+            margin-left: auto;
+            margin-right: auto;
+        }
+
+        .contact-cta-row {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 3rem;
+            margin-bottom: 2.5rem;
+            flex-wrap: wrap;
+        }
+
+        .contact-cta-item {
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+            text-decoration: none;
+            color: var(--text-light);
+            transition: color 0.3s ease;
+        }
+
+        .contact-cta-item:hover {
+            color: var(--accent-gold);
+        }
+
+        .contact-cta-item svg {
+            width: 22px;
+            height: 22px;
+            color: var(--accent-gold);
+            flex-shrink: 0;
+        }
+
+        .contact-cta-label {
+            font-size: 0.7rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 0.3rem;
+        }
+
+        .contact-cta-value {
+            font-size: 1rem;
+            color: var(--text-light);
+            font-weight: 400;
+        }
+
+        .contact-cta-divider {
+            width: 1px;
+            height: 50px;
+            background: var(--border-subtle);
+        }
+
+        .contact-note {
+            font-size: 0.8rem;
+            color: var(--text-muted);
+            letter-spacing: 0.05em;
+        }
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 5%;
+            background: var(--secondary-navy);
+            border-top: 1px solid var(--border-subtle);
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .footer-logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1rem;
+            font-weight: 500;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: rgba(248, 247, 245, 0.45);
+        }
+
+        .footer-logo span {
+            color: var(--accent-gold);
+            opacity: 0.6;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 2.5rem;
+            list-style: none;
+        }
+
+        .footer-links a {
+            font-size: 0.68rem;
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+            color: rgba(248, 247, 245, 0.28);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .footer-links a:hover {
+            color: rgba(184, 146, 106, 0.7);
+        }
+
+        .footer-copy {
+            font-size: 0.68rem;
+            letter-spacing: 0.05em;
+            color: rgba(248, 247, 245, 0.2);
+        }
+
+        /* Mobile Menu — SVG path morphing (liquid X) */
+        .mobile-menu-btn {
+            display: flex;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.4rem;
+            flex-direction: column;
+            align-items: center;
+            gap: 4px;
+        }
+
+        .mobile-menu-btn svg {
+            display: block;
+            overflow: visible;
+        }
+
+        /* The two SVG paths are long curved routes that LOOK like
+           straight lines at rest (dasharray reveals only the straight part).
+           On open, dasharray + dashoffset shift to reveal the diagonal
+           arms of the X — giving the liquid "drawing itself" effect. */
+
+        .menu-line {
+            fill: none;
+            stroke: var(--text-light);
+            stroke-width: 1.5;
+            stroke-linecap: round;
+            transition:
+                stroke-dasharray 600ms cubic-bezier(0.4, 0, 0.2, 1),
+                stroke-dashoffset 600ms cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* LINE 1  (top — full width)
+           Path: starts at left (6,10), goes straight to (38,10),
+           then curves all the way down-right to form the "" of the X at (38,34).
+           Total path length ≈ 60. At rest we show only the first 32px (the straight bit). */
+        .menu-line-1 {
+            stroke-dasharray: 32 74;
+            stroke-dashoffset: 0;
+        }
+
+        .menu-line-2 {
+            stroke-dasharray: 16 46;
+            stroke-dashoffset: 0;
+        }
+
+        /* OPEN — offset slides past the horizontal segment to reveal the diagonal X arm */
+        .mobile-menu-btn.open .menu-line-1 {
+            stroke-dasharray: 39 74;
+            stroke-dashoffset: -32;
+        }
+
+        .mobile-menu-btn.open .menu-line-2 {
+            stroke-dasharray: 27 46;
+            stroke-dashoffset: -16;
+        }
+
+        /* Label */
+        .mobile-menu-btn .btn-label {
+            position: relative;
+            height: 9px;
+            width: 32px;
+        }
+
+        .mobile-menu-btn .btn-label span {
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 0.58rem;
+            letter-spacing: 0.14em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            transition: opacity 0.3s ease, transform 0.3s ease;
+            white-space: nowrap;
+        }
+
+        .mobile-menu-btn .btn-label .label-menu {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-menu-btn .btn-label .label-close {
+            opacity: 0;
+            transform: translateY(5px);
+        }
+
+        .mobile-menu-btn.open .btn-label .label-menu {
+            opacity: 0;
+            transform: translateY(-5px);
+        }
+
+        .mobile-menu-btn.open .btn-label .label-close {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Responsive */
+        @media (max-width: 1024px) {
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+
+            .stat-item:nth-child(2)::after {
+                display: none;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+                max-width: 600px;
+            }
+
+            .about-grid {
+                grid-template-columns: 1fr;
+                gap: 4rem;
+            }
+
+            .about-visual {
+                order: -1;
+                height: 350px;
+            }
+        }
+
+        /* Mobile menu overlay panel */
+        .mobile-nav-overlay {
+            display: block;
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 998;
+            pointer-events: none;
+        }
+
+        /* Dark backdrop */
+        .mobile-nav-overlay::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: rgba(5, 10, 20, 0.6);
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        /* Slide panel */
+        .mobile-nav-panel {
+            position: absolute;
+            top: 0;
+            right: 0;
+            width: min(85vw, 360px);
+            height: 100%;
+            background: var(--secondary-navy);
+            border-left: 1px solid var(--border-subtle);
+            transform: translateX(100%);
+            transition: transform 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            padding: 6rem 3rem 4rem;
+            overflow: hidden;
+        }
+
+        /* Gold accent line that sweeps in */
+        .mobile-nav-panel::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 3px;
+            height: 100%;
+            background: linear-gradient(to bottom, var(--accent-gold), transparent 70%);
+            transform: scaleY(0);
+            transform-origin: top;
+            transition: transform 0.6s cubic-bezier(0.77, 0, 0.175, 1) 0.3s;
+        }
+
+        .mobile-nav-overlay.open {
+            pointer-events: all;
+        }
+
+        .mobile-nav-overlay.open::before {
+            opacity: 1;
+        }
+
+        .mobile-nav-overlay.open .mobile-nav-panel {
+            transform: translateX(0);
+        }
+
+        .mobile-nav-overlay.open .mobile-nav-panel::before {
+            transform: scaleY(1);
+        }
+
+        /* Nav items stagger in */
+        .mobile-nav-panel .nav-item {
+            overflow: hidden;
+            margin-bottom: 0.25rem;
+        }
+
+        .mobile-nav-panel .nav-item a {
+            display: block;
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 2.4rem;
+            font-weight: 300;
+            color: var(--text-light);
+            text-decoration: none;
+            letter-spacing: 0.02em;
+            line-height: 1.3;
+            padding: 0.4rem 0;
+            transform: translateY(110%);
+            transition: transform 0.55s cubic-bezier(0.77, 0, 0.175, 1),
+                        color 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+        .mobile-nav-panel .nav-item a:hover {
+            color: var(--accent-gold);
+        }
+
+        /* Stagger delays */
+        .mobile-nav-overlay.open .nav-item:nth-child(1) a { transform: translateY(0); transition-delay: 0.2s; }
+        .mobile-nav-overlay.open .nav-item:nth-child(2) a { transform: translateY(0); transition-delay: 0.28s; }
+        .mobile-nav-overlay.open .nav-item:nth-child(3) a { transform: translateY(0); transition-delay: 0.36s; }
+        .mobile-nav-overlay.open .nav-item:nth-child(4) a { transform: translateY(0); transition-delay: 0.44s; }
+
+        /* Bottom contact block */
+        .mobile-nav-footer {
+            margin-top: 3rem;
+            padding-top: 2rem;
+            border-top: 1px solid var(--border-subtle);
+            opacity: 0;
+            transform: translateY(12px);
+            transition: opacity 0.4s ease 0.55s, transform 0.4s ease 0.55s;
+        }
+
+        .mobile-nav-overlay.open .mobile-nav-footer {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .mobile-nav-footer a {
+            display: block;
+            color: var(--text-muted);
+            text-decoration: none;
+            font-size: 0.8rem;
+            letter-spacing: 0.12em;
+            text-transform: uppercase;
+            margin-bottom: 0.6rem;
+            transition: color 0.3s ease;
+        }
+
+        .mobile-nav-footer a:hover {
+            color: var(--accent-gold);
+        }
+
+        @media (max-width: 768px) {
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .stat-item::after {
+                display: none !important;
+            }
+
+
+            .footer-content {
+                flex-direction: column;
+                gap: 1.5rem;
+                text-align: center;
+            }
+
+            .footer-links {
+                flex-wrap: wrap;
+                justify-content: center;
+                gap: 1.5rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav id="navbar">
+        <div class="logo">Ageorge <span>&amp;</span> Co.</div>
+        <ul class="nav-links">
+            <li><a href="#services">Services</a></li>
+            <li><a href="#about">About</a></li>
+            <li><a href="#process">Process</a></li>
+            <li><a href="#contact">Contact</a></li>
+        </ul>
+        <a href="#contact" class="nav-contact">Get in Touch</a>
+        <button class="mobile-menu-btn" aria-label="Toggle menu">
+            <svg width="44" height="36" viewBox="0 0 44 36">
+                <!-- Line 1: rest=top horiz, U-turn up to TR(38,6), "/" arm to BL(6,30) -->
+                <path id="menuLine1" class="menu-line menu-line-1"
+                      d="M6,12 H38 C47,12 47,0 38,6 L6,30"/>
+                <!-- Line 2: rest=bottom-right horiz, U-turn down to BR(38,30), "" arm to TL(6,6) -->
+                <path id="menuLine2" class="menu-line menu-line-2"
+                      d="M38,24 H22 C29,24 38,26 38,30 L6,6"/>
+            </svg>
+            <div class="btn-label">
+                <span class="label-menu">Menu</span>
+                <span class="label-close">Close</span>
+            </div>
+        </button>
+    </nav>
+
+    <!-- Mobile Nav Overlay -->
+    <div class="mobile-nav-overlay" id="mobileNav">
+        <div class="mobile-nav-panel">
+            <div class="nav-item"><a href="#services">Services</a></div>
+            <div class="nav-item"><a href="#about">About</a></div>
+            <div class="nav-item"><a href="#process">Process</a></div>
+            <div class="nav-item"><a href="#contact">Contact</a></div>
+            <div class="mobile-nav-footer">
+                <a href="mailto:inquiries@georgeandco.com">inquiries@georgeandco.com</a>
+                <a href="tel:+12125550190">+1 (212) 555-0190</a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-bg"></div>
+        <div class="hero-pattern"></div>
+        <div class="hero-content">
+            <div class="hero-label">M&A Advisory</div>
+            <h1>Thoughtful Counsel for <em>Complex</em> Transactions</h1>
+            <p class="hero-description">We work with founders, family businesses, and private equity on sell-side mandates, acquisitions, and strategic transactions — bringing experience and discretion to each engagement.</p>
+            <a href="#contact" class="hero-cta">
+                Reach Out
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
+                </svg>
+            </a>
+        </div>
+    </section>
+
+    <!-- Stats Section -->
+    <section class="stats">
+        <div class="stats-grid">
+            <div class="stat-item">
+                <div class="stat-number">$2.4B+</div>
+                <div class="stat-label">Transaction Value Advised</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">47</div>
+                <div class="stat-label">Completed Transactions</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">18</div>
+                <div class="stat-label">Years of Experience</div>
+            </div>
+            <div class="stat-item">
+                <div class="stat-number">100%</div>
+                <div class="stat-label">Senior-Led Engagements</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Services Section -->
+    <section class="services" id="services">
+        <div class="section-header">
+            <div class="section-label">Our Expertise</div>
+            <h2 class="section-title">M&A Advisory Services</h2>
+            <p class="section-description">We provide experienced transaction advice across the full spectrum of M&A activity, with close senior involvement throughout every engagement.</p>
+        </div>
+        <div class="services-grid">
+            <div class="service-card">
+                <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/>
+                </svg>
+                <h3>Sell-Side Advisory</h3>
+                <p>Representation for business owners navigating a sale process, including buyer identification, preparation of materials, and negotiation support.</p>
+                <a href="#contact" class="service-link">
+                    Learn More
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="service-card">
+                <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <circle cx="12" cy="12" r="10"/>
+                    <path d="M12 6v6l4 2"/>
+                </svg>
+                <h3>Buy-Side Advisory</h3>
+                <p>Strategic acquisition support for private equity funds and corporate acquirers, from target identification and valuation through due diligence and closing.</p>
+                <a href="#contact" class="service-link">
+                    Learn More
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+            <div class="service-card">
+                <svg class="service-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                    <path d="M22 12h-4l-3 9L9 3l-3 9H2"/>
+                </svg>
+                <h3>Strategic Advisory</h3>
+                <p>Ongoing strategic counsel for complex situations including capital raises, recapitalizations, management buyouts, and corporate restructuring.</p>
+                <a href="#contact" class="service-link">
+                    Learn More
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="about-grid">
+            <div class="about-content">
+                <div class="section-label">About Ageorge &amp; Co.</div>
+                <h2 class="section-title">Trusted Advisors to Owners & Investors</h2>
+                <p class="about-text">Ageorge &amp; Co. was founded on the principle that every client deserves the caliber of advisory services typically reserved for the largest transactions. We bring institutional expertise and a relationship-driven approach to middle-market M&A.</p>
+                <p class="about-text">Our team combines decades of experience from leading investment banks with the agility and attention of a focused advisory practice. We limit our engagements to ensure each client receives our full dedication.</p>
+                <div class="about-features">
+                    <div class="about-feature">
+                        <svg class="about-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Senior-Level Attention</span>
+                    </div>
+                    <div class="about-feature">
+                        <svg class="about-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Conflict-Free Advice</span>
+                    </div>
+                    <div class="about-feature">
+                        <svg class="about-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Proprietary Buyer Network</span>
+                    </div>
+                    <div class="about-feature">
+                        <svg class="about-feature-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <polyline points="20 6 9 17 4 12"/>
+                        </svg>
+                        <span>Complete Confidentiality</span>
+                    </div>
+                </div>
+            </div>
+            <div class="about-visual">
+                <div class="about-image about-image-1">
+                    <div class="placeholder-content">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                        <span>Partner Image</span>
+                    </div>
+                </div>
+                <div class="about-image about-image-2">
+                    <div class="placeholder-content">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1">
+                            <rect x="3" y="3" width="18" height="18" rx="2" ry="2"/>
+                            <circle cx="8.5" cy="8.5" r="1.5"/>
+                            <polyline points="21 15 16 10 5 21"/>
+                        </svg>
+                        <span>Office Image</span>
+                    </div>
+                </div>
+                <div class="about-accent"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Process Section -->
+    <section class="process" id="process">
+        <div class="section-header">
+            <div class="section-label">Our Approach</div>
+            <h2 class="section-title">A Disciplined Process, Tailored to You</h2>
+            <p class="section-description">Every engagement follows our proven methodology while remaining flexible to the unique dynamics of your situation.</p>
+        </div>
+        <div class="process-steps">
+            <div class="process-step">
+                <div class="process-number">01</div>
+                <div class="process-content">
+                    <h3>Strategic Assessment</h3>
+                    <p>We begin with a thorough review of your business, objectives, and market context to build a clear transaction approach suited to your situation.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="process-number">02</div>
+                <div class="process-content">
+                    <h3>Market Preparation</h3>
+                    <p>Our team prepares institutional-quality materials and builds a targeted buyer list drawing on our relationships and proprietary research.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="process-number">03</div>
+                <div class="process-content">
+                    <h3>Controlled Process</h3>
+                    <p>We manage buyer outreach, facilitate due diligence, and create competitive tension to achieve optimal terms while maintaining confidentiality.</p>
+                </div>
+            </div>
+            <div class="process-step">
+                <div class="process-number">04</div>
+                <div class="process-content">
+                    <h3>Negotiation & Close</h3>
+                    <p>From term sheet through closing, we represent your interests carefully, working through complexity and coordinating all parties toward a successful outcome.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Testimonial Section -->
+    <section class="testimonial">
+        <div class="testimonial-content">
+            <p class="testimonial-quote">Their expertise and dedication were instrumental in achieving an outcome that exceeded our expectations. They truly understood our business and what mattered most to our family.</p>
+            <p class="testimonial-author">CEO & Founder</p>
+            <p class="testimonial-role">$120M Manufacturing Business</p>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="contact-centered">
+            <div class="section-label">Contact</div>
+            <h2 class="contact-heading">Let's Talk</h2>
+            <p class="contact-subtext">If you're considering a transaction or would like to explore whether we might be a good fit, we're glad to have a confidential conversation. No obligation.</p>
+            <div class="contact-cta-row">
+                <a href="mailto:inquiries@georgeandco.com" class="contact-cta-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/>
+                        <polyline points="22,6 12,13 2,6"/>
+                    </svg>
+                    <div>
+                        <div class="contact-cta-label">Email</div>
+                        <div class="contact-cta-value">inquiries@georgeandco.com</div>
+                    </div>
+                </a>
+                <div class="contact-cta-divider"></div>
+                <a href="tel:+12125550190" class="contact-cta-item">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38 2 2 0 0 1 3.59 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>
+                    </svg>
+                    <div>
+                        <div class="contact-cta-label">Phone</div>
+                        <div class="contact-cta-value">+1 (212) 555-0190</div>
+                    </div>
+                </a>
+            </div>
+            <p class="contact-note">All inquiries handled with complete discretion &nbsp;&middot;&nbsp; New York, NY</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <div class="footer-logo">Ageorge <span>&amp;</span> Co.</div>
+            <ul class="footer-links">
+                <li><a href="#services">Services</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#process">Process</a></li>
+                <li><a href="#contact">Contact</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Disclosures</a></li>
+            </ul>
+            <p class="footer-copy">&copy; 2026 Ageorge &amp; Co.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu — SVG liquid morph icon
+        const mobileMenuBtn = document.querySelector('.mobile-menu-btn');
+        const mobileNav     = document.getElementById('mobileNav');
+        const line1 = document.getElementById('menuLine1');
+        const line2 = document.getElementById('menuLine2');
+
+        // Measure segments using the browser's own path math
+        // Path 1: M6,12 H38 C... L6,30
+        //   restLen1 = horizontal segment = 32px
+        //   totalLen1 = getTotalLength()
+        //   uTurn1 = totalLen1 - restLen1 - armLen (arm = 40px)
+        // Path 2: M38,24 H22 C... L38,6
+        //   restLen2 = horizontal segment = 16px
+        //   totalLen2 = getTotalLength()
+
+        const restLen1 = 32;   // horiz segment of path 1
+        const restLen2 = 16;   // horiz segment of path 2 (shorter, right-aligned)
+        const armLen   = 40;   // both X arms are exactly 40px (sqrt(32²+24²))
+
+        function initIcon() {
+            const t1 = line1.getTotalLength();
+            const t2 = line2.getTotalLength();
+            const skip1 = t1 - armLen;   // length to skip to reach the arm
+            const skip2 = t2 - armLen;   // same for line 2
+
+            // Store on elements for use in toggle
+            line1._total = t1; line1._skip = skip1;
+            line2._total = t2; line2._skip = skip2;
+
+            // Rest state: show only the horizontal segment
+            line1.style.strokeDasharray  = restLen1 + ' ' + t1;
+            line1.style.strokeDashoffset = 0;
+            line2.style.strokeDasharray  = restLen2 + ' ' + t2;
+            line2.style.strokeDashoffset = 0;
+        }
+
+        function openIcon() {
+            // Slide past the horiz + U-turn, reveal the 40px diagonal arm
+            line1.style.strokeDasharray  = armLen + ' ' + line1._total;
+            line1.style.strokeDashoffset = -line1._skip;
+            line2.style.strokeDasharray  = armLen + ' ' + line2._total;
+            line2.style.strokeDashoffset = -line2._skip;
+        }
+
+        function closeIcon() {
+            line1.style.strokeDasharray  = restLen1 + ' ' + line1._total;
+            line1.style.strokeDashoffset = 0;
+            line2.style.strokeDasharray  = restLen2 + ' ' + line2._total;
+            line2.style.strokeDashoffset = 0;
+        }
+
+        initIcon();
+
+        mobileMenuBtn.addEventListener('click', () => {
+            const isOpen = mobileNav.classList.toggle('open');
+            mobileMenuBtn.classList.toggle('open', isOpen);
+            document.body.style.overflow = isOpen ? 'hidden' : '';
+            isOpen ? openIcon() : closeIcon();
+        });
+
+        // Close when clicking the backdrop or a link
+        mobileNav.addEventListener('click', (e) => {
+            if (!e.target.closest('.mobile-nav-panel') || e.target.tagName === 'A') {
+                mobileNav.classList.remove('open');
+                mobileMenuBtn.classList.remove('open');
+                document.body.style.overflow = '';
+                closeIcon();
+            }
+        });
+
+        // Navbar scroll effect
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 50) {
+                navbar.classList.add('scrolled');
+            } else {
+                navbar.classList.remove('scrolled');
+            }
+        });
+
+        // Smooth scroll for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function(e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+
+        // Intersection Observer for animations
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.service-card, .process-step, .stat-item').forEach(el => {
+            el.style.opacity = '0';
+            el.style.transform = 'translateY(20px)';
+            el.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+            observer.observe(el);
+        });
+    </script>
+</body>
+</html>
