@@ -1,0 +1,1118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AGeorge &amp; Co. | M&A Advisory</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+PHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjMGExNjI4Ii8+PHRleHQgeD0iMzIiIHk9IjQ4IiBmb250LWZhbWlseT0iSW5zdHJ1bWVudCBTZXJpZixHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iNDAwIiBmaWxsPSIjYjg5MjZhIiB0ZXh0LWFuY2hvcj0ibWlkZGxlIj5BPC90ZXh0Pjwvc3ZnPg==">
+<style>
+:root {
+  --navy:      #0a1628;
+  --navy-2:    #0f1e35;
+  --navy-3:    #152238;
+  --gold:      #b8926a;
+  --gold-lt:   #d4b896;
+  --gold-dk:   #8a6540;
+  --border:    rgba(248,247,245,0.08);
+  --border-g:  rgba(184,146,106,0.22);
+  --white:     #f8f7f5;
+  --muted:     #7a8799;
+  --parchment: #e8e2d9;
+  --parchment-lt: #ede8e0;
+  --ink:       #1a1f2e;
+  --ink-2:     #3a4050;
+  --ink-3:     #6b7080;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:16px;}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--navy);
+  color:var(--white);
+  font-weight:400;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+::selection{background:var(--gold);color:var(--navy);}
+
+.wrap{
+  max-width:1440px;
+  margin:0 auto;
+  padding:0 clamp(1.5rem,5vw,6rem);
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:300;
+  padding:0 clamp(1.5rem,5vw,6rem);
+  height:88px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:height .45s ease,background .45s ease;
+}
+
+nav.scrolled{
+  height:68px;
+  background:rgba(10,22,40,.95);
+  backdrop-filter:blur(20px);
+  -webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+}
+
+.nav-logo{
+  font-family:'Instrument Serif',serif;
+  font-size:1.45rem;
+  font-weight:400;
+  letter-spacing:.03em;
+  color:var(--white);
+  text-decoration:none;
+  text-transform:uppercase;
+  transition:opacity .3s ease;
+}
+.nav-logo:hover{opacity:.75;}
+.nav-logo-amp{font-style:italic;color:var(--gold);}
+
+/* ── MENU BTN — no circle ── */
+.menu-btn{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:8px;
+  z-index:350;
+  position:relative;
+}
+
+.m-line{
+  fill:none;
+  stroke:var(--white);
+  stroke-width:1.6;
+  stroke-linecap:round;
+  transition:
+    stroke-dasharray 600ms cubic-bezier(.4,0,.2,1),
+    stroke-dashoffset 600ms cubic-bezier(.4,0,.2,1),
+    stroke 200ms ease;
+}
+
+/* Gold during morph in both directions */
+.menu-btn.morphing .m-line{stroke:var(--gold-lt) !important;}
+.menu-btn.open      .m-line{stroke:var(--white);}
+
+.m-line-1{stroke-dasharray:32 74;stroke-dashoffset:0;}
+.m-line-2{stroke-dasharray:16 46;stroke-dashoffset:0;}
+.menu-btn.open .m-line-1{stroke-dasharray:39 74;stroke-dashoffset:-32;}
+.menu-btn.open .m-line-2{stroke-dasharray:27 46;stroke-dashoffset:-16;}
+
+.menu-word{
+  font-size:.54rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+  line-height:1;
+  transition:opacity .25s ease;
+}
+.menu-btn.open .menu-word{opacity:.45;}
+
+/* ── SLIDE PANEL ── */
+.nav-overlay{
+  position:fixed;inset:0;
+  z-index:250;
+  pointer-events:none;
+}
+.nav-overlay::before{
+  content:'';
+  position:absolute;inset:0;
+  background:rgba(5,10,20,.55);
+  opacity:0;
+  transition:opacity .5s ease;
+}
+.nav-overlay.open{pointer-events:all;}
+.nav-overlay.open::before{opacity:1;}
+
+.nav-panel{
+  position:absolute;
+  top:0;right:0;
+  width:min(90vw,440px);height:100%;
+  background:var(--navy-2);
+  border-left:1px solid var(--border);
+  transform:translateX(100%);
+  transition:transform .6s cubic-bezier(.77,0,.175,1);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:5rem 3.5rem 6rem;
+  overflow-y:auto;
+}
+.nav-panel::after{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:2px;height:100%;
+  background:linear-gradient(to bottom,var(--gold),transparent 70%);
+  transform:scaleY(0);transform-origin:top;
+  transition:transform .65s cubic-bezier(.77,0,.175,1) .22s;
+}
+.nav-overlay.open .nav-panel{transform:translateX(0);}
+.nav-overlay.open .nav-panel::after{transform:scaleY(1);}
+
+.nav-item{overflow:hidden;margin-bottom:.25rem;}
+.nav-item a{
+  display:block;
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(1.5rem,3.5vw,2rem);
+  font-weight:400;
+  color:rgba(248,247,245,.62);
+  text-decoration:none;
+  padding:.4rem 0;
+  border-bottom:1px solid var(--border);
+  transform:translateY(110%);
+  transition:color .3s ease;
+}
+.nav-item a:hover{color:var(--gold-lt);}
+
+.nav-overlay.open .nav-item a{
+  animation:navUp .6s cubic-bezier(.16,1,.3,1) forwards;
+}
+.nav-item:nth-child(1) a{animation-delay:.16s;}
+.nav-item:nth-child(2) a{animation-delay:.23s;}
+.nav-item:nth-child(3) a{animation-delay:.30s;}
+.nav-item:nth-child(4) a{animation-delay:.37s;}
+
+@keyframes navUp{
+  from{transform:translateY(110%);opacity:0;}
+  to{transform:translateY(0);opacity:1;}
+}
+
+.panel-foot{
+  margin-top:2.5rem;padding-top:2rem;
+  border-top:1px solid var(--border);
+  opacity:0;transform:translateY(8px);
+  transition:opacity .4s ease .5s,transform .4s ease .5s;
+}
+.nav-overlay.open .panel-foot{opacity:1;transform:translateY(0);}
+
+.panel-contact{display:flex;flex-direction:column;gap:.8rem;}
+.panel-contact-item{display:flex;flex-direction:column;gap:.15rem;}
+.panel-contact-label{
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);opacity:.7;font-weight:500;
+}
+.panel-contact-item a,
+.panel-contact-item span{
+  font-size:.85rem;
+  color:rgba(248,247,245,.55);
+  text-decoration:none;
+  transition:color .3s ease;
+  cursor:default;
+}
+.panel-contact-item a{cursor:pointer;}
+.panel-contact-item a:hover,
+.panel-contact-item span:hover{color:var(--gold-lt);}
+
+/* ── HERO ── */
+.hero{
+  min-height:100vh;
+  background:var(--navy);
+  display:flex;flex-direction:column;justify-content:flex-end;
+  padding:0 clamp(1.5rem,5vw,6rem) 5.5rem;
+  position:relative;overflow:hidden;
+}
+/* Visible grid */
+.hero::before{
+  content:'';
+  position:absolute;inset:0;
+  background-image:
+    linear-gradient(rgba(184,146,106,.10) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(184,146,106,.10) 1px, transparent 1px);
+  background-size:72px 72px;
+  mask-image:linear-gradient(to right, rgba(0,0,0,.85) 0%, rgba(0,0,0,.4) 55%, transparent 85%);
+  -webkit-mask-image:linear-gradient(to right, rgba(0,0,0,.85) 0%, rgba(0,0,0,.4) 55%, transparent 85%);
+  pointer-events:none;
+}
+/* Warm gold halo — left side, around the words */
+.hero::after{
+  content:'';
+  position:absolute;
+  bottom:-10%;left:-15%;
+  width:80%;height:120%;
+  background:radial-gradient(ellipse at 35% 65%,rgba(184,146,106,.13) 0%,rgba(184,146,106,.05) 35%,transparent 65%);
+  pointer-events:none;
+}
+/* Large ghost monogram */
+.hero-bg-mono{
+  position:absolute;
+  right:-2%;bottom:-8%;
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(22rem,38vw,46rem);
+  font-weight:400;
+  font-style:italic;
+  color:transparent;
+  -webkit-text-stroke:1px rgba(184,146,106,.07);
+  line-height:1;
+  pointer-events:none;
+  user-select:none;
+  letter-spacing:-.04em;
+}
+
+.hero-eyebrow{
+  display:flex;align-items:center;gap:1rem;
+  margin-bottom:2.2rem;
+  opacity:0;animation:fadeUp .8s ease .3s forwards;
+}
+.hero-ey-line{width:28px;height:1px;background:var(--gold);opacity:.55;flex-shrink:0;}
+.hero-ey-text{
+  font-size:.7rem;letter-spacing:.28em;text-transform:uppercase;
+  color:var(--gold-lt);font-weight:400;
+}
+
+.hero h1{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(3.4rem,7.5vw,7rem);
+  font-weight:400;line-height:1.02;letter-spacing:-.03em;
+  color:var(--white);max-width:1060px;
+  opacity:0;animation:fadeUp .9s ease .45s forwards;
+}
+.hero h1 em{font-style:italic;color:var(--gold-lt);}
+
+.hero-bottom{
+  display:flex;justify-content:space-between;align-items:flex-end;
+  margin-top:4.5rem;padding-top:2.5rem;
+  border-top:1px solid var(--border);
+  opacity:0;animation:fadeUp .8s ease .65s forwards;
+}
+.hero-desc{
+  max-width:440px;font-size:1rem;line-height:1.82;
+  color:rgba(248,247,245,.48);font-weight:400;
+}
+
+.hero-cta{
+  display:flex;align-items:center;gap:1.4rem;
+  text-decoration:none;color:var(--white);flex-shrink:0;
+  transition:gap .4s cubic-bezier(.4,0,.2,1);
+}
+.hero-cta:hover{gap:1.9rem;}
+.hero-cta-label{font-size:.83rem;font-weight:500;letter-spacing:.04em;color:rgba(248,247,245,.68);}
+.hero-cta-circle{
+  width:52px;height:52px;border:1px solid var(--border-g);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .4s cubic-bezier(.4,0,.2,1);
+}
+.hero-cta:hover .hero-cta-circle{background:var(--gold);border-color:var(--gold);}
+.hero-cta-circle svg{
+  width:16px;height:16px;stroke:rgba(248,247,245,.55);transition:all .4s ease;
+}
+.hero-cta:hover .hero-cta-circle svg{stroke:var(--navy);transform:translateX(2px);}
+
+@keyframes fadeUp{
+  from{opacity:0;transform:translateY(22px);}
+  to{opacity:1;transform:translateY(0);}
+}
+
+/* ── MARQUEE ── */
+.marquee-wrap{
+  overflow:hidden;
+  padding:2.6rem 0;
+  background:var(--navy-3);
+  border-top:1px solid var(--border);
+  border-bottom:1px solid var(--border);
+}
+.marquee-track{display:flex;animation:marquee 32s linear infinite;}
+@keyframes marquee{0%{transform:translateX(0);}100%{transform:translateX(-50%);}}
+
+.m-set{
+  display:flex;align-items:center;gap:3rem;
+  padding:0 1.5rem;flex-shrink:0;white-space:nowrap;
+}
+.m-stat{display:flex;align-items:baseline;gap:.6rem;}
+.m-num{
+  font-family:'Instrument Serif',serif;
+  font-size:1.75rem;color:var(--white);letter-spacing:-.02em;line-height:1;
+}
+.m-lbl{
+  font-size:.63rem;letter-spacing:.15em;text-transform:uppercase;
+  color:var(--muted);font-weight:400;
+}
+.m-sep{width:4px;height:4px;background:var(--gold);border-radius:50%;flex-shrink:0;opacity:.55;}
+
+/* ── SHARED SECTION ── */
+.eyebrow{
+  display:flex;align-items:center;gap:.75rem;
+  margin-bottom:1.3rem;
+  font-family:'Instrument Serif',serif;
+  font-style:italic;font-size:1rem;color:var(--gold);
+}
+.eyebrow::before{
+  content:'';width:22px;height:1px;
+  background:var(--gold);opacity:.45;flex-shrink:0;
+}
+
+.section-title{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(1.9rem,3.2vw,2.8rem);
+  font-weight:400;line-height:1.15;
+  color:var(--white);letter-spacing:-.02em;
+}
+
+/* ── SERVICES — light section ── */
+.services{padding:9rem 0;background:var(--parchment);}
+
+.services .eyebrow{color:var(--gold-dk);}
+.services .eyebrow::before{background:var(--gold-dk);}
+.services .section-title{color:var(--ink);}
+
+.svc-head{
+  display:flex;flex-direction:column;align-items:flex-start;
+  margin-bottom:4rem;gap:1.2rem;
+}
+.svc-head-desc{max-width:520px;font-size:.93rem;line-height:1.82;color:var(--ink-2);}
+
+.svc-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);
+  gap:1.5rem;
+}
+.svc{
+  background:var(--parchment-lt);
+  border:1px solid rgba(26,31,46,.08);
+  border-top:2px solid var(--gold);
+  padding:2.8rem 2.2rem;
+  transition:box-shadow .35s ease, transform .35s ease;
+}
+.svc:hover{
+  box-shadow:0 8px 32px rgba(26,31,46,.08);
+  transform:translateY(-2px);
+}
+
+.svc-n{font-size:.58rem;letter-spacing:.15em;color:var(--ink-3);margin-bottom:1.8rem;}
+.svc-icon{width:50px;height:50px;color:var(--gold-dk);margin-bottom:1.6rem;}
+.svc h3{
+  font-family:'Instrument Serif',serif;
+  font-size:1.45rem;font-weight:400;letter-spacing:-.01em;
+  color:var(--ink);margin-bottom:.85rem;
+}
+.svc p{font-size:.9rem;line-height:1.82;color:var(--ink-2);margin-bottom:2rem;}
+.svc-link{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.7rem;font-weight:500;letter-spacing:.08em;
+  color:var(--gold-dk);text-decoration:none;transition:gap .3s ease;
+}
+.svc-link:hover{gap:.8rem;}
+
+/* ── ABOUT ── */
+.about{background:var(--navy-2);border-top:1px solid var(--border);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;}
+
+.about-text{padding:9rem clamp(1.5rem,5vw,6rem) 9rem;}
+.about-text .section-title{margin-bottom:2rem;}
+.about-body{font-size:.93rem;line-height:1.9;color:var(--muted);margin-bottom:1.4rem;}
+
+.about-pills{display:flex;flex-wrap:wrap;gap:.5rem;margin-top:2rem;}
+.pill{
+  padding:.38rem 1rem;border:1px solid var(--border);
+  font-size:.68rem;font-weight:400;letter-spacing:.06em;text-transform:uppercase;
+  color:var(--muted);transition:border-color .3s ease,color .3s ease;
+}
+.pill:hover{border-color:var(--gold);color:var(--gold);}
+
+.about-imgs{position:relative;overflow:hidden;min-height:560px;}
+.about-img-a{position:absolute;top:0;left:0;right:0;height:62%;overflow:hidden;}
+.about-img-b{
+  position:absolute;bottom:0;left:18%;right:0;height:44%;overflow:hidden;
+  border-top:3px solid var(--navy-2);border-left:3px solid var(--navy-2);
+}
+.about-imgs img{width:100%;height:100%;object-fit:cover;opacity:.72;filter:saturate(.65);}
+
+/* ── PROCESS — horizontal accordion ── */
+.process{
+  padding:9rem 0;
+  background:var(--parchment);
+  border-top:1px solid rgba(26,31,46,.08);
+}
+
+.process .eyebrow{color:var(--gold-dk);}
+.process .eyebrow::before{background:var(--gold-dk);}
+.process .section-title{color:var(--ink);}
+.process .wrap{position:relative;}
+
+.process-head{
+  display:flex;flex-direction:column;align-items:flex-start;
+  gap:1.2rem;margin-bottom:4rem;
+  padding-bottom:3rem;
+  border-bottom:1px solid rgba(26,31,46,.1);
+}
+.process-desc{max-width:520px;font-size:.93rem;line-height:1.82;color:var(--ink-2);}
+
+/* Accordion */
+.accordion{
+  display:flex;
+  gap:0;
+  height:340px;
+  border:1px solid rgba(26,31,46,.1);
+  overflow:hidden;
+}
+
+.acc-item{
+  flex:0 0 72px;
+  border-right:1px solid rgba(26,31,46,.1);
+  position:relative;
+  cursor:pointer;
+  transition:flex .55s cubic-bezier(.4,0,.2,1), background .3s ease;
+  overflow:hidden;
+  background:var(--parchment-lt);
+}
+.acc-item:last-child{border-right:none;}
+.acc-item.open{flex:1 1 auto;}
+.acc-item:hover:not(.open){background:var(--parchment);}
+
+/* Vertical label — shown when collapsed */
+.acc-label{
+  position:absolute;
+  top:50%;left:50%;
+  transform:translate(-50%,-50%) rotate(-90deg);
+  white-space:nowrap;
+  font-family:'Instrument Serif',serif;
+  font-size:1rem;
+  font-weight:400;
+  color:var(--ink-3);
+  letter-spacing:.02em;
+  transition:opacity .25s ease;
+  pointer-events:none;
+}
+.acc-item.open .acc-label{opacity:0;}
+
+/* Content — shown when open */
+.acc-content{
+  position:absolute;
+  inset:0;
+  padding:2.8rem 2.5rem;
+  display:flex;
+  flex-direction:column;
+  justify-content:flex-end;
+  opacity:0;
+  transition:opacity .3s ease .2s;
+  pointer-events:none;
+}
+.acc-item.open .acc-content{opacity:1;pointer-events:all;}
+
+.acc-num{
+  font-family:'Instrument Serif',serif;
+  font-size:5rem;
+  font-weight:400;
+  font-style:italic;
+  color:rgba(26,31,46,.06);
+  line-height:1;
+  position:absolute;
+  top:1.5rem;right:2rem;
+  letter-spacing:-.04em;
+  transition:color .35s ease;
+}
+.acc-item.open .acc-num{color:rgba(138,101,64,.1);}
+
+.acc-step-label{
+  font-size:.58rem;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+  color:var(--gold-dk);
+  margin-bottom:.8rem;
+  font-weight:500;
+}
+
+.acc-content h3{
+  font-family:'Instrument Serif',serif;
+  font-size:1.5rem;
+  font-weight:400;
+  color:var(--ink);
+  margin-bottom:.75rem;
+  letter-spacing:-.02em;
+  white-space:nowrap;
+}
+
+.acc-content p{
+  font-size:.88rem;
+  line-height:1.8;
+  color:var(--ink-2);
+  max-width:320px;
+}
+
+/* ── INDUSTRY SPECIALTIES ── */
+.specialties{
+  padding:9rem 0;
+  background:var(--navy-2);
+  border-top:1px solid var(--border);
+}
+
+.spec-head{
+  display:flex;
+  justify-content:space-between;
+  align-items:flex-end;
+  margin-bottom:5rem;
+  padding-bottom:3rem;
+  border-bottom:1px solid var(--border);
+  gap:3rem;
+}
+
+.spec-head-desc{
+  max-width:400px;
+  font-size:.93rem;
+  line-height:1.82;
+  color:var(--muted);
+}
+
+.spec-grid{
+  display:grid;
+  grid-template-columns:repeat(4,1fr);
+  gap:1px;
+  background:var(--border);
+}
+
+.spec-item{
+  background:var(--navy-2);
+  padding:2.2rem 1.8rem;
+  transition:background .3s ease;
+  cursor:default;
+}
+
+.spec-item:hover{background:var(--navy-3);}
+
+.spec-icon{
+  font-size:1.4rem;
+  margin-bottom:1.2rem;
+  line-height:1;
+  display:block;
+}
+
+.spec-name{
+  font-family:'Instrument Serif',serif;
+  font-size:1.15rem;
+  font-weight:400;
+  color:var(--white);
+  margin-bottom:.5rem;
+  letter-spacing:-.01em;
+}
+
+.spec-desc{
+  font-size:.8rem;
+  line-height:1.75;
+  color:var(--muted);
+}
+
+.spec-tag{
+  display:inline-block;
+  margin-top:1.2rem;
+  font-size:.6rem;
+  letter-spacing:.14em;
+  text-transform:uppercase;
+  color:var(--gold);
+  opacity:.7;
+}
+
+/* ── CONTACT ── */
+.contact{padding:9rem 0;background:var(--navy);border-top:1px solid var(--border);}
+.contact-inner{max-width:480px;margin:0 auto;text-align:center;}
+.contact-inner .eyebrow{justify-content:center;}
+.contact-inner .eyebrow::before{display:none;}
+.contact-inner .section-title{margin-bottom:3rem;}
+
+.contact-rows{display:flex;flex-direction:column;gap:2rem;align-items:center;}
+.c-row{display:flex;flex-direction:column;align-items:center;gap:.35rem;}
+.c-lbl{font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:500;}
+.c-val{font-size:1rem;color:var(--muted);}
+.c-val a{color:inherit;text-decoration:none;transition:color .3s ease;}
+.c-val a:hover{color:var(--white);}
+
+/* ── FOOTER ── */
+footer{
+  padding:2.5rem clamp(1.5rem,5vw,6rem) 5rem;
+  background:var(--navy);
+  border-top:1px solid var(--border);
+}
+.footer-inner{display:flex;justify-content:space-between;align-items:center;}
+.f-logo{
+  font-family:'Instrument Serif',serif;
+  font-size:1.05rem;
+  color:rgba(248,247,245,.45);
+  letter-spacing:.03em;
+  text-transform:uppercase;
+}
+.f-logo-amp{font-style:italic;color:var(--gold);opacity:.85;}
+.f-links{display:flex;gap:2rem;list-style:none;}
+.f-links a{
+  font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(248,247,245,.42);text-decoration:none;transition:color .3s ease;
+}
+.f-links a:hover{color:rgba(248,247,245,.75);}
+.f-copy{font-size:.64rem;letter-spacing:.04em;color:rgba(248,247,245,.3);}
+
+/* ── SCROLL REVEAL ── */
+.reveal{
+  opacity:0;
+  transform:translateY(28px);
+  transition:opacity .7s cubic-bezier(.16,1,.3,1), transform .7s cubic-bezier(.16,1,.3,1);
+}
+.reveal.visible{opacity:1;transform:translateY(0);}
+.reveal-delay-1{transition-delay:.1s;}
+.reveal-delay-2{transition-delay:.2s;}
+.reveal-delay-3{transition-delay:.3s;}
+
+/* ── RESPONSIVE ── */
+@media(max-width:1024px){
+  .hero-bottom{flex-direction:column;align-items:flex-start;gap:2.5rem;}
+  .svc-grid{grid-template-columns:1fr;}
+  .about-grid{grid-template-columns:1fr;}
+  .about-imgs{min-height:340px;}
+  .spec-grid{grid-template-columns:repeat(2,1fr);}
+  .spec-head{flex-direction:column;align-items:flex-start;gap:1.5rem;}
+  .accordion{flex-direction:column;height:auto;}
+  .acc-item{flex:0 0 56px;}
+  .acc-item.open{flex:0 0 auto;}
+  .acc-label{transform:translate(-50%,-50%);writing-mode:horizontal-tb;font-size:.8rem;}
+  .acc-content{position:relative;opacity:0;height:0;padding:0 2rem;transition:opacity .3s ease, height .4s ease, padding .4s ease;}
+  .acc-item.open .acc-content{opacity:1;height:auto;padding:1.5rem 2rem 2rem;}
+  .acc-num{top:0.5rem;right:1.5rem;font-size:3rem;}
+}
+@media(max-width:640px){
+  .footer-inner{flex-direction:column;gap:1.5rem;text-align:center;}
+  .f-links{flex-wrap:wrap;justify-content:center;order:-1;}
+  .m-set{gap:2rem;}
+  .spec-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="#" class="nav-logo">AGeorge <span class="nav-logo-amp">&amp;</span> Co.</a>
+  <button class="menu-btn" id="menuBtn" aria-label="Menu">
+    <svg width="44" height="36" viewBox="0 0 44 36" style="display:block;overflow:visible;">
+      <path id="ml1" class="m-line m-line-1" d="M6,12 H38 C47,12 47,0 38,6 L6,30"/>
+      <path id="ml2" class="m-line m-line-2" d="M38,24 H22 C29,24 38,26 38,30 L6,6"/>
+    </svg>
+    <span class="menu-word" id="menuWord">Menu</span>
+  </button>
+</nav>
+
+<!-- OVERLAY -->
+<div class="nav-overlay" id="navOverlay">
+  <div class="nav-panel">
+    <div class="nav-item"><a href="#services">Services</a></div>
+    <div class="nav-item"><a href="#about">About</a></div>
+    <div class="nav-item"><a href="#process">Process</a></div>
+    <div class="nav-item"><a href="#contact">Contact</a></div>
+    <div class="panel-foot">
+      <div class="panel-contact">
+        <div class="panel-contact-item">
+          <span class="panel-contact-label">Email</span>
+          <a href="mailto:inquiries@ageorgeandco.com">inquiries@ageorgeandco.com</a>
+        </div>
+        <div class="panel-contact-item">
+          <span class="panel-contact-label">Tel</span>
+          <span>+1 212 555 0190</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-bg-mono" aria-hidden="true">AG</div>
+  <div class="hero-eyebrow">
+    <span class="hero-ey-text">M&amp;A Advisory</span>
+  </div>
+  <h1>Where <em>discretion</em><br>is the strategy</h1>
+  <div class="hero-bottom">
+    <p class="hero-desc">Highly strategic, rigorously confidential M&amp;A advice — offered to a select group of business owners and investment firms. We take on few mandates. The ones we take, we win.</p>
+    <a href="#services" class="hero-cta">
+      <span class="hero-cta-label">Explore our services</span>
+      <span class="hero-cta-circle">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M5 12h14M12 5l7 7-7 7"/>
+        </svg>
+      </span>
+    </a>
+  </div>
+</section>
+
+<!-- MARQUEE -->
+<section class="marquee-wrap" aria-label="Firm statistics">
+  <div class="marquee-track">
+    <div class="m-set">
+      <div class="m-stat"><span class="m-num">Facility Management</span><span class="m-lbl">Sector Focus</span></div>
+      <span class="m-sep"></span>
+      <div class="m-stat"><span class="m-num">100%</span><span class="m-lbl">Dedicated to Clients</span></div>
+      <span class="m-sep"></span>
+      <div class="m-stat"><span class="m-num">Sell-Side</span><span class="m-lbl">&amp; Buy-Side</span></div>
+      <span class="m-sep"></span>
+      <div class="m-stat"><span class="m-num">Middle Market</span><span class="m-lbl">Transaction Focus</span></div>
+      <span class="m-sep"></span>
+      <div class="m-stat"><span class="m-num">Principal-Led</span><span class="m-lbl">Every Engagement</span></div>
+      <span class="m-sep"></span>
+      <div class="m-stat"><span class="m-num">Complete</span><span class="m-lbl">Confidentiality</span></div>
+      <span class="m-sep"></span>
+      <div class="m-stat"><span class="m-num">New York</span><span class="m-lbl">Headquartered</span></div>
+      <span class="m-sep"></span>
+    </div>
+    <div class="m-set" aria-hidden="true">
+      <div class="m-stat"><span class="m-num">Facility Management</span><span class="m-lbl">Sector Focus</span></div>
+      <span class="m-sep"></span>
+      <div class="m-stat"><span class="m-num">100%</span><span class="m-lbl">Dedicated to Clients</span></div>
+      <span class="m-sep"></span>
+      <div class="m-stat"><span class="m-num">Sell-Side</span><span class="m-lbl">&amp; Buy-Side</span></div>
+      <span class="m-sep"></span>
+      <div class="m-stat"><span class="m-num">Middle Market</span><span class="m-lbl">Transaction Focus</span></div>
+      <span class="m-sep"></span>
+      <div class="m-stat"><span class="m-num">Principal-Led</span><span class="m-lbl">Every Engagement</span></div>
+      <span class="m-sep"></span>
+      <div class="m-stat"><span class="m-num">Complete</span><span class="m-lbl">Confidentiality</span></div>
+      <span class="m-sep"></span>
+      <div class="m-stat"><span class="m-num">New York</span><span class="m-lbl">Headquartered</span></div>
+      <span class="m-sep"></span>
+    </div>
+  </div>
+</section>
+
+<!-- SERVICES -->
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="svc-head reveal">
+      <div>
+        <div class="eyebrow">What We Do</div>
+        <h2 class="section-title">Advisory<br>Services</h2>
+      </div>
+      <p class="svc-head-desc">We focus exclusively on sell-side and buy-side M&amp;A within the facility management sector — bringing deep industry knowledge and disciplined execution to every engagement.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc reveal reveal-delay-1">
+        <div class="svc-n">01</div>
+        <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round">
+          <polyline points="4,9 12,3 20,9"/><line x1="4" y1="9" x2="20" y2="9"/>
+          <line x1="4.5" y1="10.5" x2="19.5" y2="10.5"/>
+          <line x1="6" y1="10.5" x2="6" y2="19"/><line x1="9" y1="10.5" x2="9" y2="19"/>
+          <line x1="12" y1="10.5" x2="12" y2="19"/><line x1="15" y1="10.5" x2="15" y2="19"/>
+          <line x1="18" y1="10.5" x2="18" y2="19"/>
+          <line x1="3.5" y1="19" x2="20.5" y2="19"/>
+          <line x1="3" y1="20.5" x2="21" y2="20.5"/>
+          <line x1="2.5" y1="22" x2="21.5" y2="22"/>
+        </svg>
+        <h3>Sell-Side Advisory</h3>
+        <p>Comprehensive representation for business owners considering a sale — from valuation and positioning through buyer outreach, negotiation, and a successful close. Confidential from start to finish.</p>
+        <a href="#process" class="svc-link">Our Process <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="svc reveal reveal-delay-2">
+        <div class="svc-n">02</div>
+        <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="8" y="7" width="8" height="12"/>
+          <line x1="10" y1="7" x2="10" y2="19"/><line x1="12" y1="7" x2="12" y2="19"/>
+          <line x1="14" y1="7" x2="14" y2="19"/>
+          <line x1="7" y1="7" x2="17" y2="7"/>
+          <line x1="6.5" y1="5.5" x2="17.5" y2="5.5"/>
+          <line x1="7" y1="4.5" x2="17" y2="4.5"/>
+          <line x1="7" y1="19" x2="17" y2="19"/>
+          <line x1="6" y1="20.5" x2="18" y2="20.5"/>
+          <circle cx="16" cy="10" r="4.5"/>
+          <line x1="19.2" y1="13.2" x2="22" y2="16"/>
+        </svg>
+        <h3>Buy-Side Advisory</h3>
+        <p>Disciplined acquisition support for private equity firms and strategic acquirers targeting facility management businesses — from target identification and diligence through closing and integration planning.</p>
+        <a href="#process" class="svc-link">Our Process <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+      <div class="svc reveal reveal-delay-3">
+        <div class="svc-n">03</div>
+        <svg class="svc-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="0.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M12 2L2 7l10 5 10-5-10-5z"/>
+          <path d="M2 17l10 5 10-5"/>
+          <path d="M2 12l10 5 10-5"/>
+        </svg>
+        <h3>Transaction Management</h3>
+        <p>End-to-end deal management for clients who need more than advice — process architecture, data room preparation, counterparty coordination, and senior oversight through every phase of execution.</p>
+        <a href="#process" class="svc-link">Our Process <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <div class="eyebrow">About AGeorge &amp; Co.</div>
+      <h2 class="section-title">Selective by Design.<br>Committed to Results.</h2>
+      <p class="about-body">AGeorge &amp; Co. is a specialized M&amp;A advisory practice focused exclusively on the facility management industry — janitorial, soft services, hard services, and building services businesses across the middle market.</p>
+      <p class="about-body">We work with a limited number of clients at any time. That selectivity is intentional — it is how we ensure that every engagement receives the full strategic attention, deep sector knowledge, and complete discretion it deserves. Transactions are never discussed until they are done.</p>
+      <div class="about-pills">
+        <span class="pill">Senior-Level Attention</span>
+        <span class="pill">Conflict-Free Advice</span>
+        <span class="pill">Proprietary Buyer Network</span>
+        <span class="pill">Complete Confidentiality</span>
+      </div>
+    </div>
+    <div class="about-imgs">
+      <div class="about-img-a">
+        <img src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=900&q=80&fit=crop&crop=bottom" alt="Gold financial district building"/>
+      </div>
+      <div class="about-img-b">
+        <img src="https://images.unsplash.com/photo-1556761175-4b46a572b786?w=700&q=80&fit=crop" alt="Partners in discussion"/>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROCESS -->
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="process-head reveal">
+      <div>
+        <div class="eyebrow">Our Approach</div>
+        <h2 class="section-title">A Disciplined<br>Process</h2>
+      </div>
+      <p class="process-desc">Every engagement follows our proven methodology while remaining flexible to the unique dynamics of your situation. Senior attention at every stage — not just at the start.</p>
+    </div>
+    <div class="accordion" id="processAccordion">
+      <div class="acc-item open">
+        <span class="acc-label">Assessment</span>
+        <div class="acc-num">01</div>
+        <div class="acc-content">
+          <span class="acc-step-label">First</span>
+          <h3>Strategic Assessment</h3>
+          <p>A thorough review of your business, objectives, and market context — building a clear transaction strategy tailored to your situation and goals.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <span class="acc-label">Preparation</span>
+        <div class="acc-num">02</div>
+        <div class="acc-content">
+          <span class="acc-step-label">Second</span>
+          <h3>Market Preparation</h3>
+          <p>Institutional-quality materials and a targeted buyer list — drawing on deep sector relationships and proprietary knowledge of the FM landscape.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <span class="acc-label">Outreach</span>
+        <div class="acc-num">03</div>
+        <div class="acc-content">
+          <span class="acc-step-label">Third</span>
+          <h3>Targeted Outreach</h3>
+          <p>A controlled, fully confidential process — engaging only the right parties, maintaining competitive tension, and protecting your business throughout.</p>
+        </div>
+      </div>
+      <div class="acc-item">
+        <span class="acc-label">Close</span>
+        <div class="acc-num">04</div>
+        <div class="acc-content">
+          <span class="acc-step-label">Fourth</span>
+          <h3>Negotiation &amp; Close</h3>
+          <p>Senior-led representation from term sheet through closing — coordinating all parties, managing complexity, and driving toward the best possible outcome.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- INDUSTRY SPECIALTIES -->
+<section class="specialties">
+  <div class="wrap">
+    <div class="spec-head reveal">
+      <div>
+        <div class="eyebrow">Sector Focus</div>
+        <h2 class="section-title">Facility Management<br>M&amp;A</h2>
+      </div>
+      <p class="spec-head-desc">We work exclusively within the facility management industry — a sector we know from the inside. That depth of knowledge shapes every conversation, every valuation, and every negotiation we lead.</p>
+    </div>
+    <div class="spec-grid">
+      <div class="spec-item reveal">
+        <span class="spec-icon">⬡</span>
+        <div class="spec-name">Janitorial &amp; Soft Services</div>
+        <p class="spec-desc">Commercial cleaning, environmental services, and integrated soft FM businesses across office, healthcare, industrial, and institutional settings.</p>
+        <span class="spec-tag">Core Focus</span>
+      </div>
+      <div class="spec-item reveal reveal-delay-1">
+        <span class="spec-icon">⬡</span>
+        <div class="spec-name">Hard Services &amp; Maintenance</div>
+        <p class="spec-desc">Mechanical, electrical, plumbing, and HVAC service businesses — including planned preventative maintenance and reactive maintenance contracts.</p>
+        <span class="spec-tag">Core Focus</span>
+      </div>
+      <div class="spec-item reveal reveal-delay-2">
+        <span class="spec-icon">⬡</span>
+        <div class="spec-name">Integrated FM</div>
+        <p class="spec-desc">Total facilities management providers delivering bundled hard and soft service solutions under a single contract structure.</p>
+        <span class="spec-tag">Core Focus</span>
+      </div>
+      <div class="spec-item reveal reveal-delay-3">
+        <span class="spec-icon">⬡</span>
+        <div class="spec-name">Building Services</div>
+        <p class="spec-desc">Concierge, security, front-of-house, and ancillary building services businesses operating in commercial real estate environments.</p>
+        <span class="spec-tag">Core Focus</span>
+      </div>
+      <div class="spec-item reveal">
+        <span class="spec-icon">⬡</span>
+        <div class="spec-name">Landscaping &amp; Grounds</div>
+        <p class="spec-desc">Exterior maintenance, snow removal, and grounds management companies serving commercial, municipal, and institutional clients.</p>
+        <span class="spec-tag">Active</span>
+      </div>
+      <div class="spec-item reveal reveal-delay-1">
+        <span class="spec-icon">⬡</span>
+        <div class="spec-name">Pest Control &amp; Hygiene</div>
+        <p class="spec-desc">Specialist pest management and washroom hygiene service businesses with recurring contract revenue and route-based operations.</p>
+        <span class="spec-tag">Active</span>
+      </div>
+      <div class="spec-item reveal reveal-delay-2">
+        <span class="spec-icon">⬡</span>
+        <div class="spec-name">Waste &amp; Environmental</div>
+        <p class="spec-desc">Waste collection, recycling, and environmental compliance service businesses within managed facilities and commercial portfolios.</p>
+        <span class="spec-tag">Active</span>
+      </div>
+      <div class="spec-item reveal reveal-delay-3">
+        <span class="spec-icon">⬡</span>
+        <div class="spec-name">FM Technology &amp; CAFM</div>
+        <p class="spec-desc">Software platforms, IoT-enabled maintenance tools, and tech-enabled FM businesses at the intersection of real estate and services.</p>
+        <span class="spec-tag">Selective</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="contact-inner">
+      <div class="eyebrow">Contact</div>
+      <h2 class="section-title">New York</h2>
+      <div class="contact-rows">
+        <div class="c-row">
+          <span class="c-lbl">Email</span>
+          <span class="c-val"><a href="mailto:inquiries@ageorgeandco.com">inquiries@ageorgeandco.com</a></span>
+        </div>
+        <div class="c-row">
+          <span class="c-lbl">Telephone</span>
+          <span class="c-val">+1 212 555 0190</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="f-logo">AGeorge <span class="f-logo-amp">&amp;</span> Co.</div>
+    <ul class="f-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="#">Privacy</a></li>
+      <li><a href="#">Terms</a></li>
+      <li><a href="#">Disclosures</a></li>
+    </ul>
+    <p class="f-copy">&copy; 2026 AGeorge &amp; Co.</p>
+  </div>
+</footer>
+
+<script>
+// Scroll reveals
+const observer = new IntersectionObserver((entries) => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.classList.add('visible');
+      observer.unobserve(e.target);
+    }
+  });
+}, {threshold: 0.12});
+
+document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+// Accordion
+const accItems = document.querySelectorAll('.acc-item');
+accItems.forEach(item => {
+  item.addEventListener('click', () => {
+    accItems.forEach(i => i.classList.remove('open'));
+    item.classList.add('open');
+  });
+});
+
+// Nav scroll
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll', () => {
+  navbar.classList.toggle('scrolled', window.scrollY > 50);
+}, {passive:true});
+
+// Menu
+const btn     = document.getElementById('menuBtn');
+const overlay = document.getElementById('navOverlay');
+const ml1     = document.getElementById('ml1');
+const ml2     = document.getElementById('ml2');
+const word    = document.getElementById('menuWord');
+
+const REST1 = 32, REST2 = 16, ARM = 40;
+let t1, t2, sk1, sk2;
+
+function init() {
+  t1 = ml1.getTotalLength();
+  t2 = ml2.getTotalLength();
+  sk1 = t1 - ARM;
+  sk2 = t2 - ARM;
+  ml1.style.strokeDasharray  = REST1 + ' ' + t1;
+  ml1.style.strokeDashoffset = 0;
+  ml2.style.strokeDasharray  = REST2 + ' ' + t2;
+  ml2.style.strokeDashoffset = 0;
+}
+
+function openLines() {
+  ml1.style.strokeDasharray  = ARM + ' ' + t1;
+  ml1.style.strokeDashoffset = -sk1;
+  ml2.style.strokeDasharray  = ARM + ' ' + t2;
+  ml2.style.strokeDashoffset = -sk2;
+}
+
+function closeLines() {
+  ml1.style.strokeDasharray  = REST1 + ' ' + t1;
+  ml1.style.strokeDashoffset = 0;
+  ml2.style.strokeDasharray  = REST2 + ' ' + t2;
+  ml2.style.strokeDashoffset = 0;
+}
+
+window.addEventListener('load', init);
+
+function openMenu() {
+  btn.classList.add('morphing');
+  openLines();
+  // slight delay so gold flash is visible before panel opens
+  setTimeout(() => {
+    overlay.classList.add('open');
+    btn.classList.add('open');
+  }, 80);
+  word.textContent = 'Close';
+  document.body.style.overflow = 'hidden';
+  setTimeout(() => btn.classList.remove('morphing'), 680);
+}
+
+function closeMenu() {
+  btn.classList.add('morphing');
+  closeLines();
+  setTimeout(() => {
+    overlay.classList.remove('open');
+    btn.classList.remove('open');
+  }, 80);
+  word.textContent = 'Menu';
+  document.body.style.overflow = '';
+  setTimeout(() => btn.classList.remove('morphing'), 680);
+}
+
+btn.addEventListener('click', () => {
+  overlay.classList.contains('open') ? closeMenu() : openMenu();
+});
+
+overlay.addEventListener('click', e => {
+  if (!e.target.closest('.nav-panel') || e.target.tagName === 'A') closeMenu();
+});
+</script>
+</body>
+</html>
