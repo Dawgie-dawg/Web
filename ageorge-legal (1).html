@@ -1,0 +1,725 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Legal &amp; Disclosures | AGeorge &amp; Co.</title>
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCA2NCA2NCI+CiAgPHJlY3Qgd2lkdGg9IjY0IiBoZWlnaHQ9IjY0IiBmaWxsPSIjZmZmZmZmIi8+CiAgPHRleHQgeD0iMzIiIHk9IjQ4IiBmb250LWZhbWlseT0iSW5zdHJ1bWVudCBTZXJpZixHZW9yZ2lhLHNlcmlmIiBmb250LXNpemU9IjQ4IiBmb250LXdlaWdodD0iNDAwIiBmb250LXN0eWxlPSJpdGFsaWMiIGZpbGw9IiMwYTE2MjgiIHRleHQtYW5jaG9yPSJtaWRkbGUiPkE8L3RleHQ+Cjwvc3ZnPg==">
+<style>
+:root {
+  --navy:      #47505e;
+  --gold:      #b8926a;
+  --gold-lt:   #d4b896;
+  --gold-dk:   #8a6540;
+  --border:    rgba(248,247,245,0.08);
+  --border-g:  rgba(184,146,106,0.22);
+  --white:     #f8f7f5;
+  --muted:     #7a8799;
+  --ink:       #1a1d24;
+  --ink-2:     #3a3f4a;
+  --ink-3:     #6b707c;
+  --hero-blue:    #142540;
+  --hero-blue-lt: #1e3a5f;
+}
+
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;font-size:17px;}
+
+body{
+  font-family:'DM Sans',sans-serif;
+  background:var(--hero-blue);
+  color:var(--white);
+  font-weight:400;
+  line-height:1.65;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+
+::selection{background:var(--gold);color:var(--navy);}
+
+.wrap{
+  max-width:1440px;
+  margin:0 auto;
+  padding:0 clamp(1.5rem,5vw,6rem);
+}
+
+/* ── NAV ── */
+nav{
+  position:fixed;
+  top:0;left:0;right:0;
+  z-index:300;
+  padding:0 clamp(1.5rem,5vw,6rem);
+  height:88px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  transition:height .45s ease, background .45s ease;
+}
+nav.scrolled{
+  height:68px;
+  background:#ffffff;
+  box-shadow:0 4px 24px rgba(10,22,40,.09);
+  border-bottom:1px solid rgba(138,101,64,.12);
+}
+nav.scrolled .nav-logo{color:var(--ink);}
+nav.scrolled .nav-logo-amp{color:var(--gold-dk);}
+.menu-btn-wrap.scrolled .m-line{stroke:var(--ink);}
+.menu-btn-wrap.scrolled .menu-word{color:var(--ink-3);}
+
+.nav-logo{
+  font-family:'Instrument Serif',serif;
+  font-size:1.45rem;
+  font-weight:400;
+  letter-spacing:.03em;
+  color:var(--white);
+  text-decoration:none;
+  text-transform:uppercase;
+  transition:opacity .3s ease, color .45s ease;
+}
+.nav-logo:hover{opacity:.75;}
+.nav-logo-amp{font-style:italic;color:var(--gold);}
+
+/* ── MENU BTN ── */
+.menu-btn-wrap{
+  position:fixed;top:0;right:clamp(1.5rem,5vw,6rem);
+  height:88px;display:flex;align-items:center;
+  z-index:600;
+  transition:height .45s ease;
+}
+.menu-btn-wrap.scrolled{height:68px;}
+.menu-btn{
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  gap:4px;
+  background:none;
+  border:none;
+  cursor:pointer;
+  padding:8px;
+}
+.m-line{
+  fill:none;
+  stroke:var(--white);
+  stroke-width:1.6;
+  stroke-linecap:round;
+  transition:
+    stroke-dasharray 600ms cubic-bezier(.4,0,.2,1),
+    stroke-dashoffset 600ms cubic-bezier(.4,0,.2,1),
+    stroke 200ms ease;
+}
+.menu-btn.morphing .m-line{stroke:var(--gold-lt) !important;}
+.menu-btn.open .m-line{stroke:var(--white);}
+.m-line-1{stroke-dasharray:32 74;stroke-dashoffset:0;}
+.m-line-2{stroke-dasharray:16 46;stroke-dashoffset:0;}
+.menu-btn.open .m-line-1{stroke-dasharray:39 74;stroke-dashoffset:-32;}
+.menu-btn.open .m-line-2{stroke-dasharray:27 46;stroke-dashoffset:-16;}
+.menu-word{
+  font-size:.54rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--muted);
+  line-height:1;
+  transition:opacity .25s ease, color .45s ease;
+}
+.menu-btn.open .menu-word{opacity:.45;}
+
+/* ── SLIDE PANEL ── */
+.nav-overlay{
+  position:fixed;inset:0;
+  z-index:400;
+  pointer-events:none;
+}
+.nav-overlay::before{
+  content:'';
+  position:absolute;inset:0;
+  background:rgba(5,10,20,.55);
+  opacity:0;
+  transition:opacity .5s ease;
+}
+.nav-overlay.open{pointer-events:all;}
+.nav-overlay.open::before{opacity:1;}
+
+.nav-panel{
+  position:absolute;
+  top:0;right:0;
+  width:min(90vw,440px);height:100%;
+  background:var(--hero-blue);
+  border-left:1px solid rgba(184,146,106,.15);
+  transform:translateX(100%);
+  transition:transform .6s cubic-bezier(.77,0,.175,1);
+  display:flex;flex-direction:column;justify-content:center;
+  padding:5rem 3.5rem 6rem;
+  overflow-y:auto;
+}
+.nav-panel::after{
+  content:'';
+  position:absolute;top:0;left:0;
+  width:2px;height:100%;
+  background:linear-gradient(to bottom,var(--gold),transparent 70%);
+  transform:scaleY(0);transform-origin:top;
+  transition:transform .65s cubic-bezier(.77,0,.175,1) .22s;
+}
+.nav-overlay.open .nav-panel{transform:translateX(0);}
+.nav-overlay.open .nav-panel::after{transform:scaleY(1);}
+
+.nav-item{overflow:hidden;margin-bottom:.25rem;}
+.nav-item a{
+  display:block;
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(1.5rem,3.5vw,2rem);
+  font-weight:400;
+  color:rgba(248,247,245,.62);
+  text-decoration:none;
+  padding:.4rem 0;
+  border-bottom:1px solid var(--border);
+  transform:translateY(110%);
+  transition:color .3s ease;
+}
+.nav-item a:hover{color:var(--gold-lt);}
+.nav-overlay.open .nav-item a{
+  animation:navUp .6s cubic-bezier(.16,1,.3,1) forwards;
+}
+.nav-item:nth-child(1) a{animation-delay:.16s;}
+.nav-item:nth-child(2) a{animation-delay:.23s;}
+.nav-item:nth-child(3) a{animation-delay:.30s;}
+.nav-item:nth-child(4) a{animation-delay:.37s;}
+.nav-item:nth-child(5) a{animation-delay:.44s;}
+
+@keyframes navUp{
+  from{transform:translateY(110%);opacity:0;}
+  to{transform:translateY(0);opacity:1;}
+}
+
+.panel-foot{
+  margin-top:2.5rem;padding-top:2rem;
+  border-top:1px solid var(--border);
+  opacity:0;transform:translateY(8px);
+  transition:opacity .4s ease .5s,transform .4s ease .5s;
+}
+.nav-overlay.open .panel-foot{opacity:1;transform:translateY(0);}
+.panel-contact{display:flex;flex-direction:column;gap:.8rem;}
+.panel-contact-item{display:flex;flex-direction:column;gap:.15rem;}
+.panel-contact-label{
+  font-size:.55rem;letter-spacing:.2em;text-transform:uppercase;
+  color:var(--gold);opacity:.7;font-weight:500;
+}
+.panel-contact-item a,
+.panel-contact-item span{
+  font-size:.85rem;
+  color:rgba(248,247,245,.55);
+  text-decoration:none;
+  transition:color .3s ease;
+}
+.panel-contact-item a:hover{color:var(--gold-lt);}
+
+/* ── HERO ── */
+.legal-hero{
+  padding:160px 0 0;
+  position:relative;
+  overflow:hidden;
+}
+.legal-hero::before{
+  content:'';
+  position:absolute;top:-40%;right:-10%;
+  width:600px;height:600px;
+  background:radial-gradient(circle,rgba(184,146,106,.06) 0%,transparent 70%);
+  pointer-events:none;
+}
+.legal-hero .wrap{
+  display:flex;
+  flex-direction:column;
+  gap:1.25rem;
+  padding-bottom:52px;
+}
+.legal-eyebrow{
+  font-size:.72rem;
+  letter-spacing:.22em;
+  text-transform:uppercase;
+  color:var(--gold);
+  font-weight:500;
+}
+.legal-title{
+  font-family:'Instrument Serif',serif;
+  font-size:clamp(2.5rem,6vw,4.5rem);
+  font-weight:400;
+  line-height:1.08;
+  color:var(--white);
+  max-width:680px;
+}
+.legal-subtitle{
+  color:var(--muted);
+  font-size:.95rem;
+  max-width:540px;
+  line-height:1.75;
+}
+.legal-meta{
+  font-size:.76rem;
+  color:var(--muted);
+  letter-spacing:.06em;
+  padding-top:.75rem;
+  border-top:1px solid var(--border);
+  width:fit-content;
+}
+
+/* ── TOC — flush below hero, no gap ── */
+.toc-bar{
+  position:sticky;
+  top:88px;
+  z-index:200;
+  background:rgba(12,26,46,.97);
+  backdrop-filter:blur(16px);
+  -webkit-backdrop-filter:blur(16px);
+  border-top:1px solid var(--border-g);
+  border-bottom:1px solid var(--border-g);
+  display:flex;
+  overflow-x:auto;
+  scrollbar-width:none;
+  transition:top .45s ease;
+  /* kill any default spacing */
+  margin:0;
+  padding:0 clamp(1.5rem,5vw,6rem);
+}
+.toc-bar::-webkit-scrollbar{display:none;}
+.toc-bar.nav-scrolled{top:68px;}
+
+.toc-link{
+  flex-shrink:0;
+  font-size:.68rem;
+  letter-spacing:.12em;
+  text-transform:uppercase;
+  color:var(--muted);
+  text-decoration:none;
+  white-space:nowrap;
+  font-weight:500;
+  padding:.85rem 1.4rem .85rem 0;
+  margin-right:1.25rem;
+  border-bottom:2px solid transparent;
+  transition:color .25s ease, border-color .25s ease;
+}
+.toc-link:first-child{padding-left:0;}
+.toc-link:hover{color:var(--gold-lt);}
+.toc-link.active{color:var(--gold-lt);border-bottom-color:var(--gold);}
+
+/* ── CONTENT ── */
+.legal-body{
+  padding:60px 0 120px;
+}
+.legal-sections{display:flex;flex-direction:column;}
+
+.legal-section{
+  padding:60px 0;
+  border-bottom:1px solid var(--border);
+  display:grid;
+  grid-template-columns:260px 1fr;
+  gap:5rem;
+  align-items:start;
+}
+.legal-section:last-child{border-bottom:none;}
+
+.ls-label{
+  position:sticky;
+  top:calc(88px + 46px + 1.5rem);
+}
+.ls-num{
+  font-family:'Instrument Serif',serif;
+  font-size:3rem;
+  color:rgba(184,146,106,.14);
+  line-height:1;
+  margin-bottom:.4rem;
+}
+.ls-title{
+  font-family:'Instrument Serif',serif;
+  font-size:1.3rem;
+  font-weight:400;
+  color:var(--white);
+  line-height:1.25;
+}
+.ls-tag{
+  display:inline-block;
+  margin-top:.7rem;
+  font-size:.61rem;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:var(--gold);
+  border:1px solid var(--border-g);
+  padding:.2rem .55rem;
+  border-radius:2px;
+}
+.ls-content{
+  font-size:.95rem;
+  color:rgba(248,247,245,.74);
+  line-height:1.82;
+}
+.ls-content h3{
+  font-family:'Instrument Serif',serif;
+  font-size:1.1rem;
+  font-weight:400;
+  color:var(--white);
+  margin:2rem 0 .5rem;
+}
+.ls-content h3:first-child{margin-top:0;}
+.ls-content p{margin-bottom:1rem;}
+.ls-content p:last-child{margin-bottom:0;}
+.ls-content ul{
+  list-style:none;
+  margin:0 0 1rem;
+  display:flex;flex-direction:column;gap:.4rem;
+}
+.ls-content ul li{padding-left:1.2rem;position:relative;}
+.ls-content ul li::before{
+  content:'—';position:absolute;left:0;
+  color:var(--gold);font-size:.8rem;
+}
+.ls-content a{
+  color:var(--gold-lt);text-decoration:none;
+  border-bottom:1px solid rgba(212,184,150,.3);
+  transition:border-color .2s ease;
+}
+.ls-content a:hover{border-color:var(--gold-lt);}
+
+.notice-box{
+  background:rgba(184,146,106,.07);
+  border:1px solid var(--border-g);
+  border-left:3px solid var(--gold);
+  padding:1.15rem 1.4rem;
+  border-radius:2px;
+  margin-bottom:1.25rem;
+  font-size:.9rem;
+  color:rgba(248,247,245,.82);
+  line-height:1.75;
+}
+
+/* ── FOOTER ── */
+footer{
+  background:var(--hero-blue);
+  border-top:1px solid var(--border-g);
+  padding:2.2rem clamp(1.5rem,5vw,6rem);
+}
+.footer-inner{
+  max-width:1440px;margin:0 auto;
+  display:flex;align-items:center;
+  justify-content:space-between;flex-wrap:wrap;gap:1.5rem;
+}
+.f-logo{
+  font-family:'Instrument Serif',serif;font-size:1.05rem;
+  color:rgba(248,247,245,.45);letter-spacing:.04em;text-transform:uppercase;
+}
+.f-logo-amp{font-style:italic;color:var(--gold);opacity:.85;}
+.f-links{list-style:none;display:flex;flex-wrap:wrap;gap:.25rem 2rem;}
+.f-links a{
+  font-size:.67rem;letter-spacing:.1em;text-transform:uppercase;
+  color:rgba(248,247,245,.42);text-decoration:none;transition:color .25s ease;
+}
+.f-links a:hover{color:rgba(248,247,245,.75);}
+.f-copy{font-size:.64rem;letter-spacing:.04em;color:rgba(248,247,245,.3);}
+
+/* ── RESPONSIVE ── */
+@media(max-width:900px){
+  .legal-section{
+    grid-template-columns:1fr;
+    gap:1.25rem;
+  }
+  .ls-label{
+    position:static;
+    display:flex;align-items:center;gap:1rem;
+    padding-bottom:1rem;
+    border-bottom:1px solid rgba(184,146,106,.15);
+  }
+  .ls-num{font-size:1.8rem;margin-bottom:0;opacity:.55;}
+  .ls-title{font-size:1.05rem;}
+  .ls-tag{margin-top:0;}
+}
+@media(max-width:640px){
+  html{font-size:15px;}
+  nav{height:72px;}
+  nav.scrolled{height:58px;}
+  .menu-btn-wrap{height:72px;}
+  .menu-btn-wrap.scrolled{height:58px;}
+  .toc-bar{top:72px;}
+  .toc-bar.nav-scrolled{top:58px;}
+  .legal-hero{padding-top:124px;}
+  .legal-hero .wrap{padding-bottom:40px;}
+  .legal-title{font-size:2.1rem;}
+  .legal-section{padding:40px 0;}
+  .legal-body{padding:40px 0 72px;}
+  .toc-link{font-size:.62rem;letter-spacing:.08em;padding:.72rem 1rem .72rem 0;margin-right:.75rem;}
+  .ls-content{font-size:.92rem;}
+  .notice-box{padding:.95rem 1.1rem;}
+  .footer-inner{flex-direction:column;gap:1.25rem;text-align:center;}
+  .f-links{flex-wrap:wrap;justify-content:center;}
+}
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a href="index.html" class="nav-logo">AGeorge <span class="nav-logo-amp">&amp;</span> Co.</a>
+</nav>
+
+<!-- MENU BTN -->
+<div class="menu-btn-wrap" id="menuBtnWrap">
+  <button class="menu-btn" id="menuBtn" aria-label="Menu">
+    <svg width="44" height="36" viewBox="0 0 44 36" style="display:block;overflow:visible;">
+      <path id="ml1" class="m-line m-line-1" d="M6,12 H38 C47,12 47,0 38,6 L6,30"/>
+      <path id="ml2" class="m-line m-line-2" d="M38,24 H22 C29,24 38,26 38,30 L6,6"/>
+    </svg>
+    <span class="menu-word" id="menuWord">Menu</span>
+  </button>
+</div>
+
+<!-- OVERLAY -->
+<div class="nav-overlay" id="navOverlay">
+  <div class="nav-panel">
+    <div class="nav-item"><a href="index.html#services">Services</a></div>
+    <div class="nav-item"><a href="index.html#about">About</a></div>
+    <div class="nav-item"><a href="index.html#process">Process</a></div>
+    <div class="nav-item"><a href="index.html#contact">Contact</a></div>
+    <div class="nav-item"><a href="ageorge-legal.html">Legal</a></div>
+    <div class="panel-foot">
+      <div class="panel-contact">
+        <div class="panel-contact-item">
+          <span class="panel-contact-label">Email</span>
+          <a href="mailto:info@ageorgeandco.com">info@ageorgeandco.com</a>
+        </div>
+        <div class="panel-contact-item">
+          <span class="panel-contact-label">Tel</span>
+          <span>718-407-0532</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- HERO — no bottom border; TOC bar provides the divider -->
+<section class="legal-hero">
+  <div class="wrap">
+    <div class="legal-eyebrow">Legal &amp; Compliance</div>
+    <h1 class="legal-title">Privacy, Disclosures <em>&amp;</em> Terms</h1>
+    <p class="legal-subtitle">Important information regarding how we handle your data, our regulatory status, and the terms governing use of this website and our advisory services.</p>
+    <div class="legal-meta">Last updated: February 2026 &nbsp;·&nbsp; AGeorge &amp; Co. LLC &nbsp;·&nbsp; New York, NY</div>
+  </div>
+</section>
+
+<!-- TOC — sits flush below hero -->
+<div class="toc-bar" id="tocBar">
+  <a href="#privacy" class="toc-link active">Privacy Policy</a>
+  <a href="#disclosures" class="toc-link">Regulatory Disclosures</a>
+  <a href="#terms" class="toc-link">Terms of Use</a>
+  <a href="#confidentiality" class="toc-link">Confidentiality</a>
+  <a href="#contact-legal" class="toc-link">Contact</a>
+</div>
+
+<!-- BODY -->
+<div class="legal-body">
+  <div class="wrap">
+    <div class="legal-sections">
+
+      <div class="legal-section" id="privacy">
+        <div class="ls-label">
+          <div class="ls-num">01</div>
+          <div class="ls-title">Privacy Policy</div>
+          <div class="ls-tag">Data</div>
+        </div>
+        <div class="ls-content">
+          <div class="notice-box">AGeorge &amp; Co. is committed to protecting the privacy of the principals, business owners, and counterparties with whom we work. This policy describes our practices regarding information collected through this website and in connection with our advisory engagements.</div>
+          <h3>Information We Collect</h3>
+          <p>We may collect personal and business information that you voluntarily provide when contacting us, requesting information, or entering into a formal engagement. This may include name, company name, title, contact details, financial information relevant to an advisory matter, and other details shared in the ordinary course of a transaction or inquiry.</p>
+          <p>When you visit this website, we may automatically receive standard technical information such as IP address, browser type, pages visited, and referring URLs. This information is used solely for website performance and security purposes and is not linked to any personally identifiable profile.</p>
+          <h3>How We Use Information</h3>
+          <ul>
+            <li>To respond to inquiries and assess potential advisory engagements</li>
+            <li>To perform M&amp;A advisory, due diligence facilitation, and related services under a signed engagement agreement</li>
+            <li>To comply with applicable legal, regulatory, and professional obligations</li>
+            <li>To maintain and improve the functionality of this website</li>
+          </ul>
+          <h3>Sharing of Information</h3>
+          <p>We do not sell, rent, or trade personal information to third parties. Information may be shared with counterparties, professional advisors (legal counsel, accountants, lenders), or service providers strictly on a need-to-know basis and under obligations of confidentiality. We may disclose information as required by law, court order, or regulatory authority.</p>
+          <h3>Cookies &amp; Tracking</h3>
+          <p>This website may use minimal cookies for session management and analytics. We do not deploy advertising trackers or third-party remarketing pixels. You may disable cookies in your browser settings; this will not materially affect your ability to access or use this website.</p>
+          <h3>Data Retention</h3>
+          <p>We retain information for as long as necessary to fulfil the purposes for which it was collected, to comply with applicable legal obligations, and to resolve disputes or enforce agreements. Information related to formal advisory engagements is typically retained for seven years following conclusion of the matter.</p>
+          <h3>Your Rights</h3>
+          <p>You may request access to, correction of, or deletion of personal information we hold about you, subject to applicable law and any overriding professional obligations. Requests should be directed to the contact information below.</p>
+        </div>
+      </div>
+
+      <div class="legal-section" id="disclosures">
+        <div class="ls-label">
+          <div class="ls-num">02</div>
+          <div class="ls-title">Regulatory Disclosures</div>
+          <div class="ls-tag">Compliance</div>
+        </div>
+        <div class="ls-content">
+          <div class="notice-box">Nothing on this website constitutes an offer to sell or a solicitation of an offer to buy any security. AGeorge &amp; Co. does not act as a broker-dealer and is not registered as such with FINRA or the SEC.</div>
+          <h3>Nature of Services</h3>
+          <p>AGeorge &amp; Co. LLC provides mergers and acquisitions advisory services exclusively to principals — owners, founders, and management teams — in the facility management and services sector. Our engagements are private, bespoke, and conducted under written advisory agreements.</p>
+          <h3>No Securities Brokerage</h3>
+          <p>AGeorge &amp; Co. does not act as a broker-dealer, placement agent, or intermediary in the purchase or sale of securities as defined under U.S. federal or state law. Our advisory activities are structured and conducted in accordance with applicable exemptions. Where a transaction involves securities, appropriate registered broker-dealer services will be engaged or referred as required by law.</p>
+          <h3>No Investment Advice</h3>
+          <p>Nothing contained on this website or in any communication from AGeorge &amp; Co. constitutes investment advice, financial advice, or a recommendation to buy or sell any asset, security, or business interest. All information provided is for general informational purposes only. Prospective clients should obtain independent legal, financial, and tax counsel before entering any transaction.</p>
+          <h3>Past Performance</h3>
+          <p>Any references to prior transactions, deal outcomes, or sector experience are provided for illustrative purposes only. Past advisory outcomes are not indicative of future results. Each transaction is unique and subject to its own risks, market conditions, and commercial circumstances.</p>
+          <h3>Jurisdictional Matters</h3>
+          <p>AGeorge &amp; Co. LLC is organised in the State of New York. Our advisory services are principally offered within the United States. Nothing on this website constitutes an offer or solicitation in any jurisdiction where such activities would be unlawful.</p>
+          <h3>Conflicts of Interest</h3>
+          <p>We disclose to clients, prior to engagement, any material conflicts of interest known at the time of engagement. Our principal obligation is to the client we are engaged to represent. We do not represent both buyer and seller in the same transaction without full written disclosure and informed consent from all relevant parties.</p>
+        </div>
+      </div>
+
+      <div class="legal-section" id="terms">
+        <div class="ls-label">
+          <div class="ls-num">03</div>
+          <div class="ls-title">Terms of Use</div>
+          <div class="ls-tag">Website</div>
+        </div>
+        <div class="ls-content">
+          <p>By accessing and using this website, you agree to be bound by the following terms. If you do not agree with any part of these terms, please do not use this website.</p>
+          <h3>Permitted Use</h3>
+          <p>This website is provided for informational purposes relating to the advisory services of AGeorge &amp; Co. LLC. You may access and view content for personal, non-commercial use. You may not reproduce, distribute, modify, or create derivative works from any content on this website without our prior written consent.</p>
+          <h3>No Reliance</h3>
+          <p>The information on this website is provided in good faith but without any warranty as to accuracy, completeness, or currency. You should not rely on any content on this website in making business, financial, or legal decisions. AGeorge &amp; Co. accepts no liability for any loss or damage arising from reliance on information contained herein.</p>
+          <h3>Intellectual Property</h3>
+          <p>All content on this website — including text, design, graphics, and the AGeorge &amp; Co. name and marks — is the property of AGeorge &amp; Co. LLC or its licensors and is protected by applicable intellectual property laws. Unauthorised use is prohibited.</p>
+          <h3>Third-Party Links</h3>
+          <p>This website may contain links to external websites for convenience. We do not endorse, control, or accept responsibility for the content, privacy practices, or accuracy of any third-party websites. Accessing linked websites is at your own risk.</p>
+          <h3>Limitation of Liability</h3>
+          <p>To the fullest extent permitted by law, AGeorge &amp; Co. LLC, its members, officers, and employees shall not be liable for any indirect, incidental, consequential, or punitive damages arising from your use of, or inability to use, this website.</p>
+          <h3>Governing Law</h3>
+          <p>These terms are governed by and construed in accordance with the laws of the State of New York, without regard to conflict of laws principles. Any dispute arising under these terms shall be subject to the exclusive jurisdiction of the courts of New York County, New York.</p>
+          <h3>Modifications</h3>
+          <p>We reserve the right to update these terms at any time. Continued use of this website following any update constitutes acceptance of the revised terms. The date of last revision is noted at the top of this page.</p>
+        </div>
+      </div>
+
+      <div class="legal-section" id="confidentiality">
+        <div class="ls-label">
+          <div class="ls-num">04</div>
+          <div class="ls-title">Confidentiality</div>
+          <div class="ls-tag">Engagement</div>
+        </div>
+        <div class="ls-content">
+          <div class="notice-box">Discretion is foundational to our practice. We work exclusively with principals and treat every inquiry, engagement, and transaction with strict confidence.</div>
+          <h3>Our Commitment</h3>
+          <p>AGeorge &amp; Co. treats all information received from clients, counterparties, and prospective clients as strictly confidential. We do not disclose the existence or details of any advisory engagement, transaction, or inquiry without the express consent of the relevant principal.</p>
+          <h3>Engagement Confidentiality</h3>
+          <p>All formal advisory mandates are governed by a written engagement agreement that includes comprehensive confidentiality obligations consistent with professional M&amp;A advisory practice. These obligations survive the conclusion of any engagement.</p>
+          <h3>Information Sharing in Transactions</h3>
+          <p>The sharing of confidential business information with potential acquirers, investors, or counterparties during a transaction process is conducted under executed non-disclosure agreements, approved by the client, and managed through a controlled information disclosure process. We do not share client information speculatively or without authorisation.</p>
+          <h3>Website Inquiries</h3>
+          <p>Information submitted through this website or communicated to us via email or telephone prior to the execution of a formal engagement agreement will be treated with reasonable care and discretion, but may not benefit from the full confidentiality protections of a signed engagement agreement. We encourage prospective clients to discuss the scope of any confidentiality arrangement before sharing sensitive information.</p>
+        </div>
+      </div>
+
+      <div class="legal-section" id="contact-legal">
+        <div class="ls-label">
+          <div class="ls-num">05</div>
+          <div class="ls-title">Contact &amp; Enquiries</div>
+          <div class="ls-tag">Legal</div>
+        </div>
+        <div class="ls-content">
+          <p>For questions, concerns, or requests relating to any of the above — including privacy, data access, or regulatory matters — please contact us directly.</p>
+          <h3>AGeorge &amp; Co. LLC</h3>
+          <ul>
+            <li>New York, NY</li>
+            <li>Telephone: 718-407-0532</li>
+            <li>Email: <a href="mailto:info@ageorgeandco.com">info@ageorgeandco.com</a></li>
+          </ul>
+          <p style="margin-top:1.5rem;">We aim to respond to all legal and compliance enquiries within five business days. For urgent matters, please contact us by telephone.</p>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-inner">
+    <div class="f-logo">AGeorge <span class="f-logo-amp">&amp;</span> Co.</div>
+    <ul class="f-links">
+      <li><a href="index.html#services">Services</a></li>
+      <li><a href="index.html#about">About</a></li>
+      <li><a href="index.html#process">Process</a></li>
+      <li><a href="index.html#contact">Contact</a></li>
+      <li><a href="ageorge-legal.html">Legal</a></li>
+    </ul>
+    <p class="f-copy">&copy; 2026 AGeorge &amp; Co.</p>
+  </div>
+</footer>
+
+<script>
+// ── Nav + TOC sticky sync ──
+const navbar      = document.getElementById('navbar');
+const menuBtnWrap = document.getElementById('menuBtnWrap');
+const tocBar      = document.getElementById('tocBar');
+
+window.addEventListener('scroll', () => {
+  const scrolled = window.scrollY > 50;
+  navbar.classList.toggle('scrolled', scrolled);
+  menuBtnWrap.classList.toggle('scrolled', scrolled);
+  tocBar.classList.toggle('nav-scrolled', scrolled);
+}, {passive:true});
+
+// ── Menu ──
+const btn     = document.getElementById('menuBtn');
+const overlay = document.getElementById('navOverlay');
+const ml1     = document.getElementById('ml1');
+const ml2     = document.getElementById('ml2');
+const word    = document.getElementById('menuWord');
+const REST1 = 32, REST2 = 16, ARM = 40;
+let t1, t2, sk1, sk2;
+
+function init(){
+  t1 = ml1.getTotalLength(); t2 = ml2.getTotalLength();
+  sk1 = t1 - ARM; sk2 = t2 - ARM;
+  ml1.style.strokeDasharray = REST1+' '+t1; ml1.style.strokeDashoffset = 0;
+  ml2.style.strokeDasharray = REST2+' '+t2; ml2.style.strokeDashoffset = 0;
+}
+function openLines(){
+  ml1.style.strokeDasharray = ARM+' '+t1; ml1.style.strokeDashoffset = -sk1;
+  ml2.style.strokeDasharray = ARM+' '+t2; ml2.style.strokeDashoffset = -sk2;
+}
+function closeLines(){
+  ml1.style.strokeDasharray = REST1+' '+t1; ml1.style.strokeDashoffset = 0;
+  ml2.style.strokeDasharray = REST2+' '+t2; ml2.style.strokeDashoffset = 0;
+}
+window.addEventListener('load', init);
+
+function openMenu(){
+  btn.classList.add('morphing'); openLines();
+  setTimeout(()=>{ overlay.classList.add('open'); btn.classList.add('open'); }, 80);
+  word.textContent = 'Close'; document.body.style.overflow = 'hidden';
+  setTimeout(()=> btn.classList.remove('morphing'), 680);
+}
+function closeMenu(){
+  btn.classList.add('morphing'); closeLines();
+  setTimeout(()=>{ overlay.classList.remove('open'); btn.classList.remove('open'); }, 80);
+  word.textContent = 'Menu'; document.body.style.overflow = '';
+  setTimeout(()=> btn.classList.remove('morphing'), 680);
+}
+btn.addEventListener('click', ()=>{ overlay.classList.contains('open') ? closeMenu() : openMenu(); });
+overlay.addEventListener('click', e=>{ if(!e.target.closest('.nav-panel')) closeMenu(); });
+
+// ── TOC active highlighting ──
+const sections = document.querySelectorAll('.legal-section[id]');
+const tocLinks = document.querySelectorAll('.toc-link');
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if(e.isIntersecting){
+      tocLinks.forEach(l => l.classList.remove('active'));
+      const active = document.querySelector(`.toc-link[href="#${e.target.id}"]`);
+      if(active){
+        active.classList.add('active');
+        active.scrollIntoView({block:'nearest', inline:'center', behavior:'smooth'});
+      }
+    }
+  });
+}, {rootMargin:'-20% 0px -70% 0px'});
+
+sections.forEach(s => io.observe(s));
+</script>
+</body>
+</html>
