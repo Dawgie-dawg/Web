@@ -1,0 +1,584 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>A. George & Co. | M&A Advisory</title>
+<link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%230f2040'/%3E%3Ctext x='16' y='24' font-family='Georgia%2C serif' font-size='20' font-style='italic' fill='%23ffffff' text-anchor='middle'%3EA.%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Libre+Baskerville:ital,wght@0,400;0,700;1,400&family=Figtree:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy:#0f2040;--navy-2:#1a3258;--rule:#d8dde6;--rule-dk:#b0bac8;
+  --page:#ffffff;--off:#f5f6f8;--ink:#0c1824;--ink-2:#2d3a4a;--ink-3:#5a6675;--ink-4:#8c97a4;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{font-size:16px;scroll-behavior:smooth;}
+body{font-family:'Figtree',sans-serif;background:#fff;color:var(--ink);font-weight:400;line-height:1.65;-webkit-font-smoothing:antialiased;overflow-x:hidden;}
+::selection{background:var(--navy);color:#fff;}
+.wrap{max-width:1320px;margin:0 auto;padding:0 clamp(1.5rem,5vw,5rem);}
+
+/* NAV */
+#nav{position:fixed;top:0;left:0;right:0;z-index:900;height:68px;display:flex;align-items:center;justify-content:space-between;padding:0 clamp(1.5rem,5vw,5rem);background:transparent;border-bottom:1px solid transparent;transition:background .35s,border-color .35s;}
+#nav.scrolled{background:rgba(255,255,255,.97);border-bottom-color:var(--rule);backdrop-filter:blur(8px);}
+#nav.menu-open{background:transparent !important;border-bottom-color:transparent !important;backdrop-filter:none !important;}
+#nav.menu-open .nav-logo{color:#fff !important;}
+#nav.menu-open .nav-contact-link{color:rgba(255,255,255,.6) !important;}
+#nav.menu-open .nav-contact-link:hover{color:#fff !important;}
+.nav-logo{text-decoration:none;font-family:'Libre Baskerville',serif;font-size:1.05rem;font-weight:400;color:#fff;letter-spacing:.01em;transition:color .3s;}
+.nav-logo em{font-style:italic;}
+#nav.scrolled .nav-logo{color:var(--navy);}
+.nav-right{display:flex;align-items:center;gap:2rem;}
+.nav-contact-link{font-size:.64rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.6);text-decoration:none;transition:color .25s;}
+.nav-contact-link:hover{color:#fff;}
+#nav.scrolled .nav-contact-link{color:var(--ink-3);}
+#nav.scrolled .nav-contact-link:hover{color:var(--navy);}
+
+/* ── MENU BUTTON ── */
+.nav-mob {
+  display:flex;flex-direction:column;align-items:center;
+  justify-content:center;
+  background:none;border:none;cursor:pointer;padding:8px;
+}
+
+/* SVG lines */
+.hb-line {
+  fill: none;
+  stroke: rgba(255,255,255,.9);
+  stroke-width: 1.6;
+  stroke-linecap: round;
+  transition:
+    stroke-dasharray  600ms cubic-bezier(.4,0,.2,1),
+    stroke-dashoffset 600ms cubic-bezier(.4,0,.2,1),
+    stroke            200ms ease,
+    opacity           300ms ease;
+}
+
+/* Scrolled: dark lines */
+#nav.scrolled .hb-line { stroke: var(--ink); }
+/* Menu open: always white */
+#nav.menu-open .hb-line { stroke: rgba(255,255,255,.9) !important; }
+
+/* Gold flash during morph */
+.nav-mob.morphing .hb-line { stroke: #b8926a !important; }
+
+/* Line 1 & 3 — dashoffset set by JS */
+#hbL1 { stroke-dashoffset: 0; }
+#hbL3 { stroke-dashoffset: 0; }
+
+/* Line 2 — middle, fades in place */
+#hbL2 {
+  opacity: 1;
+  transition: opacity 350ms cubic-bezier(.4,0,.2,1), stroke 200ms ease;
+  stroke-dasharray: none;
+  stroke-dashoffset: 0;
+}
+.nav-mob.open #hbL2 { opacity: 0; }
+
+/* DRAWER */
+.drawer{position:fixed;inset:0;background:var(--navy);z-index:800;transform:translateX(100%);transition:transform .55s cubic-bezier(.77,0,.175,1);display:flex;flex-direction:column;justify-content:center;padding:0 clamp(2rem,8vw,6rem);}
+.drawer.op{transform:translateX(0);}
+.drawer-main{display:flex;flex-direction:column;gap:1.6rem;}
+.drawer-main a{font-family:'Libre Baskerville',serif;font-size:clamp(2rem,5vw,3rem);color:rgba(255,255,255,.5);text-decoration:none;transition:color .25s;line-height:1.2;}
+.drawer-main a:hover{color:#fff;}
+.drawer-rule{width:36px;height:1px;background:rgba(255,255,255,.12);margin:2rem 0 1.6rem;}
+.drawer-sub{display:flex;flex-direction:column;gap:.8rem;}
+.drawer-sub a{font-size:.64rem;font-weight:500;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.32);text-decoration:none;transition:color .25s;}
+.drawer-sub a:hover{color:rgba(255,255,255,.7);}
+
+/* HERO */
+.hero{
+  height:100vh;min-height:640px;
+  background:linear-gradient(155deg,#091728 0%,#0f2040 55%,#152a50 100%);
+  display:grid;
+  grid-template-rows:1fr auto;
+  padding:0 clamp(1.5rem,5vw,5rem);
+  position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 100px,rgba(255,255,255,.013) 100px,rgba(255,255,255,.013) 101px);pointer-events:none;}
+
+.hero-body{
+  display:flex;flex-direction:column;justify-content:center;
+  padding-top:68px;
+  position:relative;z-index:1;
+}
+.hero-eyebrow{display:flex;align-items:center;gap:.9rem;margin-bottom:clamp(2rem,4vh,3.5rem);opacity:0;animation:up .7s ease .2s forwards;}
+.hero-eyebrow-dash{width:28px;height:1px;background:rgba(255,255,255,.25);}
+.hero-eyebrow-text{font-size:.58rem;font-weight:500;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.38);}
+.hero-headline{
+  font-family:'Libre Baskerville',serif;font-weight:400;
+  font-size:clamp(3.2rem,7.5vw,5.8rem);
+  line-height:1.04;letter-spacing:-.028em;color:#fff;
+  opacity:0;animation:up .9s ease .35s forwards;
+}
+.hero-headline em{font-style:italic;color:rgba(255,255,255,.52);}
+
+.hero-foot{position:relative;z-index:1;padding-bottom:clamp(2.5rem,5vh,4rem);opacity:0;animation:up .7s ease .55s forwards;}
+.hero-divider{width:100%;height:1px;background:rgba(255,255,255,.1);margin-bottom:clamp(1.5rem,3vh,2.2rem);}
+.hero-foot-inner{display:flex;justify-content:space-between;align-items:flex-end;gap:3rem;}
+.hero-desc{max-width:480px;font-size:.95rem;line-height:1.85;color:rgba(255,255,255,.4);font-weight:300;}
+.hero-action{display:flex;align-items:center;gap:.85rem;color:rgba(255,255,255,.32);text-decoration:none;flex-shrink:0;transition:color .3s;}
+.hero-action:hover{color:rgba(255,255,255,.65);}
+.hero-action-label{font-size:.57rem;font-weight:500;letter-spacing:.2em;text-transform:uppercase;white-space:nowrap;}
+.hero-action-circle{width:32px;height:32px;border:1px solid currentColor;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+.hero-action-circle svg{width:11px;height:11px;stroke:currentColor;fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;}
+
+@keyframes up{from{opacity:0;transform:translateY(20px);}to{opacity:1;transform:none;}}
+
+/* CREDENTIALS */
+.creds{background:var(--off);border-bottom:1px solid var(--rule);padding:2.2rem clamp(1.5rem,5vw,5rem);}
+.creds-inner{max-width:1320px;margin:0 auto;display:grid;grid-template-columns:repeat(4,1fr);border-left:1px solid var(--rule);}
+.cred{padding:0 2.2rem;border-right:1px solid var(--rule);}
+.cred-val{font-family:'Libre Baskerville',serif;font-size:1.35rem;font-weight:400;color:var(--navy);letter-spacing:-.02em;line-height:1;margin-bottom:.4rem;}
+.cred-lbl{font-size:.54rem;font-weight:500;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-4);}
+
+/* SECTION LABEL */
+.sl{display:flex;align-items:center;gap:.8rem;margin-bottom:1.4rem;}
+.sl-line{width:24px;height:2px;background:var(--navy);flex-shrink:0;}
+.sl-text{font-size:.58rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--navy);}
+
+/* SERVICES */
+.services{padding:clamp(5rem,9vw,9rem) 0;background:#fff;border-top:4px solid var(--navy);}
+.svc-top{display:grid;grid-template-columns:1fr 1fr;gap:5rem;align-items:end;margin-bottom:clamp(3.5rem,6vw,6rem);padding-bottom:clamp(2.5rem,4vw,4rem);border-bottom:1px solid var(--rule);}
+.svc-title{font-family:'Libre Baskerville',serif;font-weight:400;font-size:clamp(2.4rem,4vw,4.2rem);line-height:1.06;letter-spacing:-.022em;color:var(--navy);}
+.svc-lead{font-size:1rem;line-height:1.85;color:var(--ink-3);font-weight:300;}
+.svc-grid{display:grid;grid-template-columns:repeat(3,1fr);border-left:1px solid var(--rule);border-top:1px solid var(--rule);}
+.svc{padding:clamp(2.2rem,3.5vw,3.2rem) clamp(1.8rem,2.5vw,2.8rem);border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);position:relative;overflow:hidden;transition:background .3s;}
+.svc::before{content:'';position:absolute;top:0;left:0;right:0;height:3px;background:var(--navy);transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.77,0,.175,1);}
+.svc:hover::before{transform:scaleX(1);}
+.svc:hover{background:var(--off);}
+.svc-n{font-family:'Libre Baskerville',serif;font-size:.78rem;color:var(--rule-dk);margin-bottom:1.8rem;transition:color .3s;}
+.svc:hover .svc-n{color:var(--navy);}
+.svc-name{font-family:'Libre Baskerville',serif;font-size:1.5rem;color:var(--navy);line-height:1.15;letter-spacing:-.018em;margin-bottom:1.1rem;}
+.svc-body{font-size:.92rem;line-height:1.82;color:var(--ink-3);font-weight:300;margin-bottom:2.2rem;}
+.svc-lnk{display:inline-flex;align-items:center;gap:.6rem;font-size:.58rem;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--navy);text-decoration:none;transition:gap .3s;}
+.svc-lnk:hover{gap:1rem;}
+.svc-arr{width:20px;height:1px;background:var(--navy);position:relative;flex-shrink:0;transition:width .3s;}
+.svc-arr::after{content:'';position:absolute;right:0;top:50%;transform:translateY(-50%);border-top:3px solid transparent;border-bottom:3px solid transparent;border-left:5px solid var(--navy);}
+.svc:hover .svc-arr{width:28px;}
+
+/* ABOUT */
+.about{background:linear-gradient(160deg,#091728 0%,#0d1e38 60%,#0f2040 100%);}
+.about-grid{display:grid;grid-template-columns:1fr 1fr;}
+.about-left{padding:clamp(5rem,8vw,8rem) clamp(1.5rem,5vw,5rem);border-right:1px solid rgba(255,255,255,.07);display:flex;flex-direction:column;justify-content:center;}
+.about-left .sl-line{background:rgba(255,255,255,.2);}
+.about-left .sl-text{color:rgba(255,255,255,.3);}
+.about-title{font-family:'Libre Baskerville',serif;font-size:clamp(1.9rem,3vw,3rem);font-weight:400;line-height:1.1;letter-spacing:-.02em;color:#fff;margin-bottom:2.2rem;}
+.about-title em{font-style:italic;color:rgba(255,255,255,.5);}
+.about-body{font-size:.97rem;line-height:1.88;color:rgba(255,255,255,.44);font-weight:300;margin-bottom:1.3rem;}
+.about-stats{display:grid;grid-template-columns:1fr 1fr;margin-top:2.8rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,.07);}
+.astat{padding:1.5rem 0;}
+.astat:first-child{border-right:1px solid rgba(255,255,255,.07);padding-right:2rem;}
+.astat:last-child{padding-left:2rem;}
+.astat-lbl{font-size:.5rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.22);margin-bottom:.45rem;}
+.astat-val{font-family:'Libre Baskerville',serif;font-size:.98rem;color:rgba(255,255,255,.58);}
+.about-right{background:rgba(0,0,0,.15);padding:clamp(4rem,6vw,6rem) clamp(2rem,4vw,5rem);display:flex;flex-direction:column;justify-content:center;}
+.ap{padding:1.7rem 0;border-bottom:1px solid rgba(255,255,255,.06);}
+.ap:last-child{border-bottom:none;}
+.ap-lbl{font-size:.49rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.2);margin-bottom:.55rem;}
+.ap-val{font-family:'Libre Baskerville',serif;font-size:.98rem;color:rgba(255,255,255,.55);line-height:1.45;letter-spacing:-.01em;}
+
+/* PROCESS */
+.process{padding:clamp(5rem,9vw,9rem) 0;background:var(--off);border-top:1px solid var(--rule);}
+.proc-head{display:grid;grid-template-columns:1fr 1.5fr;gap:5rem;align-items:end;margin-bottom:4.5rem;padding-bottom:3.5rem;border-bottom:1px solid var(--rule);}
+.proc-title{font-family:'Libre Baskerville',serif;font-size:clamp(2rem,3.5vw,3.5rem);font-weight:400;line-height:1.08;letter-spacing:-.02em;color:var(--navy);}
+.proc-intro{font-size:.97rem;line-height:1.85;color:var(--ink-3);font-weight:300;}
+.proc-grid{display:grid;grid-template-columns:repeat(4,1fr);border-left:1px solid var(--rule);border-top:1px solid var(--rule);}
+.step{padding:2.5rem 1.8rem;border-right:1px solid var(--rule);border-bottom:1px solid var(--rule);background:#fff;position:relative;overflow:hidden;transition:background .3s;}
+.step::after{content:'';position:absolute;bottom:0;left:0;right:0;height:2px;background:var(--navy);transform:scaleX(0);transform-origin:left;transition:transform .45s cubic-bezier(.77,0,.175,1);}
+.step:hover::after{transform:scaleX(1);}
+.step-n{font-family:'Libre Baskerville',serif;font-size:2.2rem;color:var(--rule);line-height:1;margin-bottom:1.8rem;transition:color .3s;letter-spacing:-.03em;}
+.step:hover .step-n{color:var(--navy);}
+.step-name{font-family:'Libre Baskerville',serif;font-size:1.18rem;color:var(--navy);line-height:1.2;margin-bottom:.9rem;letter-spacing:-.01em;}
+.step-body{font-size:.86rem;line-height:1.82;color:var(--ink-3);font-weight:300;}
+
+/* SECTORS */
+.sectors{padding:clamp(5rem,9vw,9rem) 0;background:#fff;border-top:1px solid var(--rule);}
+.sec-head{display:grid;grid-template-columns:1fr 1.8fr;gap:5rem;align-items:end;margin-bottom:4.5rem;padding-bottom:3.5rem;border-bottom:1px solid var(--rule);}
+.sec-title{font-family:'Libre Baskerville',serif;font-size:clamp(2rem,3.5vw,3.5rem);font-weight:400;line-height:1.08;letter-spacing:-.02em;color:var(--navy);}
+.sec-intro{font-size:.97rem;line-height:1.85;color:var(--ink-3);font-weight:300;}
+.sr{display:grid;grid-template-columns:52px 1fr auto 26px;align-items:center;gap:1.8rem;padding:1.5rem 0;border-bottom:1px solid var(--rule);cursor:pointer;position:relative;transition:padding .25s;}
+.sr::before{content:'';position:absolute;left:0;top:50%;transform:translateY(-50%);width:0;height:2px;background:var(--navy);transition:width .3s;}
+.sr:hover::before,.sr.ac::before{width:26px;}
+.sr:hover,.sr.ac{padding-left:38px;}
+.sr-num{font-family:'Libre Baskerville',serif;font-size:.82rem;font-style:italic;color:var(--rule-dk);transition:color .25s;}
+.sr:hover .sr-num,.sr.ac .sr-num{color:var(--navy);}
+.sr-name{font-family:'Libre Baskerville',serif;font-size:1.15rem;color:var(--ink-2);letter-spacing:-.01em;transition:color .25s;}
+.sr:hover .sr-name,.sr.ac .sr-name{color:var(--navy);}
+.sr-tag{font-size:.49rem;font-weight:600;letter-spacing:.18em;text-transform:uppercase;color:var(--ink-4);transition:color .25s;}
+.sr.ac .sr-tag{color:var(--navy);}
+.sr-arr{width:24px;height:24px;display:flex;align-items:center;justify-content:center;border:1px solid var(--rule);border-radius:50%;transition:all .25s;flex-shrink:0;}
+.sr-arr svg{width:8px;height:8px;stroke:var(--ink-4);fill:none;stroke-width:2;stroke-linecap:round;stroke-linejoin:round;transition:all .25s;}
+.sr:hover .sr-arr,.sr.ac .sr-arr{background:var(--navy);border-color:var(--navy);}
+.sr:hover .sr-arr svg,.sr.ac .sr-arr svg{stroke:#fff;}
+.sr-detail{overflow:hidden;max-height:0;transition:max-height .4s cubic-bezier(.16,1,.3,1);grid-column:2/5;}
+.sr-detail.op{max-height:120px;}
+.sr-detail-inner{padding:.15rem 0 1.3rem;font-size:.9rem;line-height:1.8;color:var(--ink-3);font-weight:300;}
+
+/* CONTACT */
+.contact{padding:clamp(6rem,10vw,10rem) 0;background:linear-gradient(155deg,#091728 0%,#0d1e38 100%);position:relative;overflow:hidden;}
+.contact::before{content:'';position:absolute;inset:0;background:repeating-linear-gradient(-55deg,transparent,transparent 100px,rgba(255,255,255,.012) 100px,rgba(255,255,255,.012) 101px);pointer-events:none;}
+.contact-inner{max-width:720px;position:relative;z-index:1;}
+.contact-inner .sl-line{background:rgba(255,255,255,.2);}
+.contact-inner .sl-text{color:rgba(255,255,255,.32);}
+.contact-title{font-family:'Libre Baskerville',serif;font-size:clamp(2.4rem,4.5vw,4.8rem);font-weight:400;line-height:1.06;letter-spacing:-.022em;color:#fff;margin-bottom:2.8rem;}
+.contact-title em{font-style:italic;color:rgba(255,255,255,.5);}
+.contact-rule{width:100%;height:1px;background:rgba(255,255,255,.1);margin-bottom:2.8rem;}
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:3rem;}
+.c-lbl{font-size:.54rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:rgba(255,255,255,.26);margin-bottom:.65rem;}
+.c-val{font-family:'Libre Baskerville',serif;font-size:1.15rem;color:rgba(255,255,255,.62);}
+.c-val a{color:inherit;text-decoration:none;transition:color .25s;}
+.c-val a:hover{color:#fff;}
+.contact-note{margin-top:2.8rem;padding-top:2.2rem;border-top:1px solid rgba(255,255,255,.07);font-size:.83rem;color:rgba(255,255,255,.26);font-weight:300;max-width:420px;line-height:1.75;}
+
+/* FOOTER */
+footer{background:var(--navy);border-top:1px solid rgba(255,255,255,.08);padding:1.8rem clamp(1.5rem,5vw,5rem);}
+.fi{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:1.2rem;}
+.f-logo{font-family:'Libre Baskerville',serif;font-size:.85rem;color:rgba(255,255,255,.28);}
+.f-logo em{font-style:italic;}
+.f-links{display:flex;gap:1.8rem;list-style:none;flex-wrap:wrap;}
+.f-links a{font-size:.52rem;font-weight:500;letter-spacing:.14em;text-transform:uppercase;color:rgba(255,255,255,.22);text-decoration:none;transition:color .25s;}
+.f-links a:hover{color:rgba(255,255,255,.5);}
+.f-copy{font-size:.54rem;letter-spacing:.06em;color:rgba(255,255,255,.18);}
+
+@media(max-width:1024px){
+  .svc-top,.proc-head,.sec-head{grid-template-columns:1fr;gap:2rem;}
+  .proc-grid{grid-template-columns:1fr 1fr;}
+  .about-grid,.svc-grid{grid-template-columns:1fr;}
+  .contact-grid{grid-template-columns:1fr;gap:2rem;}
+}
+@media(max-width:640px){
+  .proc-grid{grid-template-columns:1fr;}
+  .hero-foot-inner{flex-direction:column;align-items:flex-start;gap:1.5rem;}
+  .sr{grid-template-columns:38px 1fr 24px;}
+  .sr-tag{display:none;}
+  .sr-detail{grid-column:2/4;}
+  .fi{flex-direction:column;text-align:center;}
+  .f-links{justify-content:center;}
+  .about-stats{grid-template-columns:1fr;}
+  .astat:first-child{border-right:none;border-bottom:1px solid rgba(255,255,255,.07);padding-right:0;}
+  .astat:last-child{padding-left:0;}
+  .creds-inner{grid-template-columns:1fr 1fr;}
+  .cred{padding:1.2rem 1.4rem;}
+  .cred:nth-child(2){border-right:none;}
+  .cred:nth-child(3){border-top:1px solid var(--rule);}
+  .cred:nth-child(4){border-top:1px solid var(--rule);border-right:none;}
+}
+</style>
+</head>
+<body>
+
+<nav id="nav">
+  <a href="#" class="nav-logo">A. George <em>&amp;</em> Co.</a>
+  <div class="nav-right">
+    <a href="#contact" class="nav-contact-link">Contact Us</a>
+    <!-- 3-line menu button -->
+    <button class="nav-mob" id="navMob" aria-label="Open menu" aria-expanded="false">
+      <svg width="30" height="24" viewBox="0 0 30 24" style="display:block;overflow:visible;">
+        <!-- Line 1 — top, longest — morphs into \ arm -->
+        <path id="hbL1" class="hb-line" d="M2,3 H28 C44,3 44,-2 23,21 L7,3"/>
+        <!-- Line 2 — middle — fades in place -->
+        <line id="hbL2" class="hb-line" x1="2" y1="12" x2="22" y2="12"/>
+        <!-- Line 3 — bottom, shortest — morphs into / arm -->
+        <path id="hbL3" class="hb-line" d="M2,21 H16 C-14,21 -14,26 7,21 L23,3"/>
+      </svg>
+    </button>
+  </div>
+</nav>
+
+<div class="drawer" id="drawer">
+  <div class="drawer-main">
+    <a href="#services">Services</a>
+    <a href="#about">About</a>
+    <a href="#process">Process</a>
+    <a href="#sectors">Sectors</a>
+  </div>
+  <div class="drawer-rule"></div>
+  <div class="drawer-sub">
+    <a href="#contact">Contact Us &rarr;</a>
+  </div>
+</div>
+
+<section class="hero">
+  <div class="hero-body">
+    <div class="hero-eyebrow">
+      <div class="hero-eyebrow-dash"></div>
+      <span class="hero-eyebrow-text">M&amp;A Advisory &nbsp;·&nbsp; New York</span>
+    </div>
+    <h1 class="hero-headline">
+      The advisory firm<br>built for <em>facility management.</em>
+    </h1>
+  </div>
+  <div class="hero-foot">
+    <div class="hero-divider"></div>
+    <div class="hero-foot-inner">
+      <p class="hero-desc">Sell-side and buy-side M&amp;A counsel for facility management businesses across the middle market. Selective by design. Senior-led on every mandate.</p>
+      <a href="#services" class="hero-action">
+        <span class="hero-action-label">Explore</span>
+        <span class="hero-action-circle">
+          <svg viewBox="0 0 24 24"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+        </span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div class="creds">
+  <div class="creds-inner">
+    <div class="cred"><div class="cred-val">Sell-Side</div><div class="cred-lbl">Advisory</div></div>
+    <div class="cred"><div class="cred-val">Buy-Side</div><div class="cred-lbl">Advisory</div></div>
+    <div class="cred"><div class="cred-val">Middle Market</div><div class="cred-lbl">Transaction Focus</div></div>
+    <div class="cred"><div class="cred-val">New York</div><div class="cred-lbl">Headquartered</div></div>
+  </div>
+</div>
+
+<section class="services" id="services">
+  <div class="wrap">
+    <div class="svc-top">
+      <div>
+        <div class="sl"><div class="sl-line"></div><span class="sl-text">What We Do</span></div>
+        <h2 class="svc-title">Advisory<br>Services</h2>
+      </div>
+      <p class="svc-lead">We focus exclusively on sell-side and buy-side M&amp;A within the facility management sector — bringing deep industry knowledge and disciplined execution to every mandate. Our practice is intentionally selective.</p>
+    </div>
+    <div class="svc-grid">
+      <div class="svc">
+        <div class="svc-n">01</div>
+        <div class="svc-name">Sell-Side<br>Advisory</div>
+        <p class="svc-body">Comprehensive representation for business owners considering a sale — from strategic valuation and positioning through confidential buyer outreach, negotiation, and close.</p>
+        <a href="#process" class="svc-lnk">Our Process <span class="svc-arr"></span></a>
+      </div>
+      <div class="svc">
+        <div class="svc-n">02</div>
+        <div class="svc-name">Buy-Side<br>Advisory</div>
+        <p class="svc-body">Disciplined acquisition support for private equity and strategic buyers — target identification, diligence, negotiation through closing and integration planning.</p>
+        <a href="#process" class="svc-lnk">Our Process <span class="svc-arr"></span></a>
+      </div>
+      <div class="svc">
+        <div class="svc-n">03</div>
+        <div class="svc-name">Transaction<br>Management</div>
+        <p class="svc-body">End-to-end deal management for clients who require more than counsel — process architecture, data room preparation, and senior oversight at every stage of execution.</p>
+        <a href="#process" class="svc-lnk">Our Process <span class="svc-arr"></span></a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-left">
+      <div class="sl" style="margin-bottom:2rem;"><div class="sl-line"></div><span class="sl-text">About A. George &amp; Co.</span></div>
+      <h2 class="about-title">Selective<br>by <em>design.</em></h2>
+      <p class="about-body">A. George &amp; Co. is a specialized M&amp;A advisory practice focused exclusively on the facility management industry — janitorial, soft services, hard services, and building services businesses across the middle market.</p>
+      <p class="about-body">We work with a limited number of clients at any time. That selectivity is intentional — it ensures every engagement receives the full strategic attention, deep sector knowledge, and complete discretion it deserves.</p>
+      <div class="about-stats">
+        <div class="astat"><div class="astat-lbl">Engagement Model</div><div class="astat-val">Senior-Led, Always</div></div>
+        <div class="astat"><div class="astat-lbl">Conflicts Policy</div><div class="astat-val">None — by Design</div></div>
+      </div>
+    </div>
+    <div class="about-right">
+      <div class="ap"><div class="ap-lbl">Sector Focus</div><div class="ap-val">Facility management — exclusively. Janitorial, soft services, hard services, building services, and integrated FM.</div></div>
+      <div class="ap"><div class="ap-lbl">Transaction Types</div><div class="ap-val">Sell-side and buy-side M&amp;A. Full representation or transaction management as required.</div></div>
+      <div class="ap"><div class="ap-lbl">Client Profile</div><div class="ap-val">Founder-owned and family-owned businesses. Private equity platforms pursuing add-on acquisitions.</div></div>
+      <div class="ap"><div class="ap-lbl">Engagement Model</div><div class="ap-val">Principal-led on every mandate. Limited client intake to ensure undivided attention.</div></div>
+      <div class="ap"><div class="ap-lbl">Confidentiality</div><div class="ap-val">Transactions are never disclosed until they are closed. Complete discretion is non-negotiable.</div></div>
+    </div>
+  </div>
+</section>
+
+<section class="process" id="process">
+  <div class="wrap">
+    <div class="proc-head">
+      <div>
+        <div class="sl"><div class="sl-line"></div><span class="sl-text">Our Approach</span></div>
+        <h2 class="proc-title">A Disciplined<br>Process</h2>
+      </div>
+      <p class="proc-intro">Every engagement follows our proven methodology while remaining responsive to the unique dynamics of your situation. Senior attention at every phase — not only at the start.</p>
+    </div>
+    <div class="proc-grid">
+      <div class="step"><div class="step-n">01</div><div class="step-name">Strategic Assessment</div><p class="step-body">A thorough review of your business, objectives, and market context — establishing a clear transaction strategy tailored to your situation.</p></div>
+      <div class="step"><div class="step-n">02</div><div class="step-name">Market Preparation</div><p class="step-body">Institutional-quality materials and a targeted buyer list, drawing on deep sector relationships and proprietary knowledge of the FM landscape.</p></div>
+      <div class="step"><div class="step-n">03</div><div class="step-name">Targeted Outreach</div><p class="step-body">A controlled, fully confidential process — engaging only the right parties, maintaining competitive tension throughout.</p></div>
+      <div class="step"><div class="step-n">04</div><div class="step-name">Negotiation &amp; Close</div><p class="step-body">Senior-led representation from term sheet through closing — coordinating all parties and driving toward the best possible outcome.</p></div>
+    </div>
+  </div>
+</section>
+
+<section class="sectors" id="sectors">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <div class="sl"><div class="sl-line"></div><span class="sl-text">Sector Focus</span></div>
+        <h2 class="sec-title">Facility Management<br>M&amp;A</h2>
+      </div>
+      <p class="sec-intro">We work exclusively within the facility management industry — a sector we know from the inside. That depth shapes every valuation, every buyer conversation, and every negotiation we lead.</p>
+    </div>
+    <div id="sectorTable">
+      <div class="sr ac" data-d="Commercial cleaning, environmental services, and integrated soft FM businesses across office, healthcare, industrial, and institutional settings.">
+        <span class="sr-num">01</span><span class="sr-name">Janitorial &amp; Soft Services</span><span class="sr-tag">Core</span>
+        <span class="sr-arr"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="sr-detail op"><div class="sr-detail-inner">Commercial cleaning, environmental services, and integrated soft FM businesses across office, healthcare, industrial, and institutional settings.</div></div>
+      </div>
+      <div class="sr" data-d="Mechanical, electrical, plumbing, and HVAC service businesses — including planned preventative maintenance and reactive maintenance contracts.">
+        <span class="sr-num">02</span><span class="sr-name">Hard Services &amp; Maintenance</span><span class="sr-tag">Core</span>
+        <span class="sr-arr"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="sr-detail"><div class="sr-detail-inner"></div></div>
+      </div>
+      <div class="sr" data-d="Total facilities management providers delivering bundled hard and soft service solutions under a single contract structure.">
+        <span class="sr-num">03</span><span class="sr-name">Integrated FM</span><span class="sr-tag">Core</span>
+        <span class="sr-arr"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="sr-detail"><div class="sr-detail-inner"></div></div>
+      </div>
+      <div class="sr" data-d="Concierge, security, front-of-house, and ancillary building services businesses operating in commercial real estate environments.">
+        <span class="sr-num">04</span><span class="sr-name">Building Services</span><span class="sr-tag">Core</span>
+        <span class="sr-arr"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="sr-detail"><div class="sr-detail-inner"></div></div>
+      </div>
+      <div class="sr" data-d="Exterior maintenance, snow removal, and grounds management companies serving commercial, municipal, and institutional clients.">
+        <span class="sr-num">05</span><span class="sr-name">Landscaping &amp; Grounds</span><span class="sr-tag">Active</span>
+        <span class="sr-arr"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="sr-detail"><div class="sr-detail-inner"></div></div>
+      </div>
+      <div class="sr" data-d="Specialist pest management and washroom hygiene service businesses with recurring contract revenue and route-based operations.">
+        <span class="sr-num">06</span><span class="sr-name">Pest Control &amp; Hygiene</span><span class="sr-tag">Active</span>
+        <span class="sr-arr"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="sr-detail"><div class="sr-detail-inner"></div></div>
+      </div>
+      <div class="sr" data-d="Waste collection, recycling, and environmental compliance service businesses within managed facilities and commercial portfolios.">
+        <span class="sr-num">07</span><span class="sr-name">Waste &amp; Environmental</span><span class="sr-tag">Active</span>
+        <span class="sr-arr"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="sr-detail"><div class="sr-detail-inner"></div></div>
+      </div>
+      <div class="sr" data-d="Software platforms, IoT-enabled maintenance tools, and tech-enabled FM businesses at the intersection of real estate and services.">
+        <span class="sr-num">08</span><span class="sr-name">FM Technology &amp; CAFM</span><span class="sr-tag">Selective</span>
+        <span class="sr-arr"><svg viewBox="0 0 24 24"><path d="M9 18l6-6-6-6" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+        <div class="sr-detail"><div class="sr-detail-inner"></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="wrap">
+    <div class="contact-inner">
+      <div class="sl" style="margin-bottom:2rem;"><div class="sl-line" style="background:rgba(255,255,255,.2)"></div><span class="sl-text" style="color:rgba(255,255,255,.32)">Get In Touch</span></div>
+      <h2 class="contact-title">New York,<br><em>New York.</em></h2>
+      <div class="contact-rule"></div>
+      <div class="contact-grid">
+        <div><div class="c-lbl">Electronic Mail</div><div class="c-val"><a href="mailto:info@ageorgeandco.com">info@ageorgeandco.com</a></div></div>
+        <div><div class="c-lbl">Telephone</div><div class="c-val">718 · 407 · 0532</div></div>
+      </div>
+      <p class="contact-note">All enquiries are treated with complete confidentiality. Transactions are never discussed until they are closed.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="fi">
+    <div class="f-logo">A. George <em>&amp;</em> Co.</div>
+    <ul class="f-links">
+      <li><a href="#services">Services</a></li>
+      <li><a href="#about">About</a></li>
+      <li><a href="#process">Process</a></li>
+      <li><a href="#sectors">Sectors</a></li>
+      <li><a href="#contact">Contact</a></li>
+      <li><a href="legal.html#privacy">Privacy</a></li>
+      <li><a href="legal.html#terms">Terms</a></li>
+      <li><a href="legal.html#disclosures">Disclosures</a></li>
+    </ul>
+    <p class="f-copy">&copy; 2026 A. George &amp; Co.</p>
+  </div>
+</footer>
+
+<script>
+var nav    = document.getElementById('nav');
+var btn    = document.getElementById('navMob');
+var drawer = document.getElementById('drawer');
+
+// Nav scroll state
+window.addEventListener('scroll', function(){ nav.classList.toggle('scrolled', window.scrollY > 50); }, { passive: true });
+nav.classList.toggle('scrolled', window.scrollY > 50);
+
+// ── 3-LINE MENU ANIMATION ─────────────────────────────────────
+var ml1 = document.getElementById('hbL1');
+var ml3 = document.getElementById('hbL3');
+
+var REST1 = 26, REST3 = 14, ARM = 24;
+var t1, t3, sk1, sk3;
+
+function initLines() {
+  t1  = ml1.getTotalLength();
+  t3  = ml3.getTotalLength();
+  sk1 = t1 - ARM;
+  sk3 = t3 - ARM;
+  ml1.style.strokeDasharray  = REST1 + ' ' + t1;
+  ml1.style.strokeDashoffset = 0;
+  ml3.style.strokeDasharray  = REST3 + ' ' + t3;
+  ml3.style.strokeDashoffset = 0;
+  // hbL2 is a plain <line> — opacity only, no dasharray needed
+}
+
+function openLines() {
+  ml1.style.strokeDasharray  = ARM + ' ' + t1;
+  ml1.style.strokeDashoffset = -sk1;
+  ml3.style.strokeDasharray  = ARM + ' ' + t3;
+  ml3.style.strokeDashoffset = -sk3;
+}
+
+function closeLines() {
+  ml1.style.strokeDasharray  = REST1 + ' ' + t1;
+  ml1.style.strokeDashoffset = 0;
+  ml3.style.strokeDasharray  = REST3 + ' ' + t3;
+  ml3.style.strokeDashoffset = 0;
+}
+
+window.addEventListener('load', initLines);
+
+var isOpen = false;
+
+function openMenu() {
+  isOpen = true;
+  btn.classList.add('morphing');
+  openLines();
+  setTimeout(function() { btn.classList.add('open'); }, 80);
+  nav.classList.add('menu-open');
+  drawer.classList.add('op');
+  document.body.style.overflow = 'hidden';
+  btn.setAttribute('aria-expanded', 'true');
+  setTimeout(function() { btn.classList.remove('morphing'); }, 680);
+}
+
+function closeMenu() {
+  isOpen = false;
+  btn.classList.add('morphing');
+  closeLines();
+  setTimeout(function() { btn.classList.remove('open'); }, 80);
+  nav.classList.remove('menu-open');
+  drawer.classList.remove('op');
+  document.body.style.overflow = '';
+  btn.setAttribute('aria-expanded', 'false');
+  setTimeout(function() { btn.classList.remove('morphing'); }, 680);
+}
+
+btn.addEventListener('click', function() { isOpen ? closeMenu() : openMenu(); });
+drawer.querySelectorAll('a').forEach(function(a) { a.addEventListener('click', closeMenu); });
+
+// ── SECTORS ACCORDION ─────────────────────────────────────────
+document.querySelectorAll('.sr').forEach(function(row){
+  row.addEventListener('click', function(){
+    var was = row.classList.contains('ac');
+    document.querySelectorAll('.sr').forEach(function(r){
+      r.classList.remove('ac');
+      r.querySelector('.sr-detail').classList.remove('op');
+    });
+    if (!was) {
+      row.classList.add('ac');
+      var det = row.querySelector('.sr-detail');
+      det.querySelector('.sr-detail-inner').textContent = row.dataset.d;
+      det.classList.add('op');
+    }
+  });
+});
+</script>
+</body>
+</html>
